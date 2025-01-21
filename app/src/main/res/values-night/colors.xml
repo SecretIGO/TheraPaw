@@ -3,10 +3,10 @@
     <color name="black">#222222</color>
     <color name="white">#EAEAEA</color>
 
-    <color name="background">#EAEAEA</color>
+    <color name="background">#222222</color>
 
-    <color name="primary">#579DFA</color>
-    <color name="ico_primary">#222222</color>
+    <color name="primary">#1C3250</color>
+    <color name="ico_primary">#EAEAEA</color>
 
     <color name="textCold">#4081e4</color>
     <color name="textRegular">#99b3d9</color>
@@ -16,9 +16,8 @@
     <color name="severe">#f97070</color>
 
     <color name="backgroundCold">#32004497</color>
-    <color name="backgroundLight">#32ADD1FF</color>
-    <color name="backgroundRegular">#32579DFA</color>
-    <color name="backgroundWarm">#32FF9696</color>
+    <color name="backgroundRegular">#321C3250</color>
+    <color name="backgroundWarm">#33734242</color>
 
     <color name="transparent">#00000000</color>
 </resources>

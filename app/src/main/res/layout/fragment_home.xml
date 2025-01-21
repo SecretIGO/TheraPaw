@@ -31,7 +31,7 @@
             app:menu="@menu/menu_home_nav"
             app:itemRippleColor="@null"
             app:itemIconSize="16sp"
-            app:itemIconTint="@color/primary"
+            app:itemIconTint="@color/ico_primary"
             app:labelVisibilityMode="unlabeled"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
