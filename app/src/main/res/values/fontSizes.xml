@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="heading_large">26px</string>
+    <string name="heading_medium">22px</string>
+    <string name="heading_small">18px</string>
+    <string name="body_large">16px</string>
+    <string name="body_medium">14px</string>
+    <string name="body_small">12px</string>
+</resources>
