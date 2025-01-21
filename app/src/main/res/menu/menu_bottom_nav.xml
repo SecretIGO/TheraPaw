@@ -9,7 +9,7 @@
         android:icon="@drawable/ico_devices"
         android:title="Devices" />
     <item
-        android:id="@+id/history"
+        android:id="@+id/data"
         android:icon="@drawable/ico_history"
         android:title="Data" />
 </menu>

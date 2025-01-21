@@ -15,6 +15,7 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/navbar"
             android:layout_width="325sp"
             android:layout_height="65dp"
             android:layout_gravity="center"
