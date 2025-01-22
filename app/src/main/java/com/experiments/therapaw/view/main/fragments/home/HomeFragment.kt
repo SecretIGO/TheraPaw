@@ -1,14 +1,12 @@
 package com.experiments.therapaw.view.main.fragments.home
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.experiments.therapaw.R
 import com.experiments.therapaw.databinding.FragmentHomeBinding
-import com.experiments.therapaw.view.main.fragments.data.DataFragment
-import com.experiments.therapaw.view.main.fragments.devices.DevicesFragment
 import com.experiments.therapaw.view.main.fragments.home.fragments.HeartbeatFragment
 import com.experiments.therapaw.view.main.fragments.home.fragments.LocationFragment
 import com.experiments.therapaw.view.main.fragments.home.fragments.TemperatureFragment
