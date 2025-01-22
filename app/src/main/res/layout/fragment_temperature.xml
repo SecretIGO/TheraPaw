@@ -167,25 +167,25 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
                                 android:text="Max Temp"
-                                android:textSize="12sp"
-                                android:textStyle="bold"
                                 android:textColor="@color/white"
-                                android:layout_marginBottom="8dp"/>
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="40.55°C"
+                                android:textColor="@color/white"
                                 android:textSize="20sp"
-                                android:textStyle="bold"
-                                android:textColor="@color/white"/>
+                                android:textStyle="bold" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/white"
-                                android:text="105°F"/>
+                                android:text="105°F"
+                                android:textColor="@color/white" />
 
                         </LinearLayout>
 
@@ -208,22 +208,22 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
                                 android:text="Min Temp"
                                 android:textSize="12sp"
-                                android:textStyle="bold"
-                                android:layout_marginBottom="8dp"/>
+                                android:textStyle="bold" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="38.55°C"
                                 android:textSize="20sp"
-                                android:textStyle="bold"/>
+                                android:textStyle="bold" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="101.39°F"/>
+                                android:text="101.39°F" />
 
                         </LinearLayout>
 
@@ -253,14 +253,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:background="@color/transparent"
+                        app:itemActiveIndicatorStyle="@null"
+                        app:itemIconSize="16sp"
+                        app:itemTextColor="@color/bottom_nav_color"
+                        app:itemRippleColor="@null"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:menu="@menu/menu_time_variants"
-                        app:itemRippleColor="@null"
-                        app:itemIconSize="16sp"
-                        app:itemIconTint="@color/ico_primary"
-                        />
+                        app:menu="@menu/menu_time_variants" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>

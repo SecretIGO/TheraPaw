@@ -16,6 +16,7 @@
     <color name="severe">#f97070</color>
 
     <color name="backgroundCold">#32004497</color>
+    <color name="backgroundLight">#322C3542</color>
     <color name="backgroundRegular">#321C3250</color>
     <color name="backgroundWarm">#33734242</color>
 
