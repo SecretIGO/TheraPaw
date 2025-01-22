@@ -1,6 +1,7 @@
 package com.experiments.therapaw.view.main
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.experiments.therapaw.R
@@ -10,11 +11,14 @@ import com.experiments.therapaw.databinding.GenToolbarBinding
 import com.experiments.therapaw.view.main.fragments.data.DataFragment
 import com.experiments.therapaw.view.main.fragments.devices.DevicesFragment
 import com.experiments.therapaw.view.main.fragments.home.HomeFragment
+import com.experiments.therapaw.viewmodel.SharedViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
     private lateinit var toolbar : GenToolbarBinding
     private lateinit var navbar : GenNavbarBinding
+
+    private val sharedViewModel : SharedViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +27,10 @@ class MainActivity : AppCompatActivity() {
         navbar = GenNavbarBinding.bind(binding.root)
 
         setContentView(binding.root)
+
+        sharedViewModel.toolbarTitle.observe(this) { title ->
+            toolbar.title.text = title
+        }
 
         bind()
     }
@@ -50,10 +58,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         val transaction = fragmentManager.beginTransaction()
-
         transaction.replace(R.id.fragment_cont, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
+
+        val fragmentName = fragment::class.java.simpleName
+        when (fragmentName) {
+            "HomeFragment" -> sharedViewModel.setToolbarTitle("Home")
+            "DevicesFragment" -> sharedViewModel.setToolbarTitle("Devices")
+            "DataFragment" -> sharedViewModel.setToolbarTitle("Data")
+        }
+
         return true
     }
 }

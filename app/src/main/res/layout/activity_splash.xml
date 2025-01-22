@@ -5,13 +5,55 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.SplashActivity">
+    tools:context=".view.SplashActivity"
+    android:background="@color/background">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="splash"
-        android:textColor="@color/primary"
-        />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/anim_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/background"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/anim_card1"
+                android:layout_width="45sp"
+                android:layout_height="45sp"
+                android:backgroundTint="@color/backgroundRegular"
+                android:layout_gravity="center"
+                app:cardElevation="0sp"
+                app:cardCornerRadius="500dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/anim_card2"
+                android:layout_width="100sp"
+                android:layout_height="100sp"
+                android:backgroundTint="@color/backgroundRegular"
+                android:layout_gravity="center"
+                app:cardElevation="0sp"
+                app:cardCornerRadius="500dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/anim_card3"
+                android:layout_width="140sp"
+                android:layout_height="140sp"
+                android:backgroundTint="@color/backgroundRegular"
+                android:layout_gravity="center"
+                app:cardElevation="0sp"
+                app:cardCornerRadius="50dp"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/bannerlogo_therapaw"
+                android:layout_margin="70dp"
+                />
+        </androidx.cardview.widget.CardView>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

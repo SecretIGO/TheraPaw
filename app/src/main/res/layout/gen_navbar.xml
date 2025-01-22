@@ -10,14 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/primary"
-        app:cardCornerRadius="20sp"
+        app:cardCornerRadius="15sp"
         app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/navbar"
             android:layout_width="325sp"
-            android:layout_height="65dp"
+            android:layout_height="60dp"
             android:layout_gravity="center"
             android:background="@color/transparent"
             app:itemActiveIndicatorStyle="@null"

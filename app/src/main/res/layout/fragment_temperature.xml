@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frame_temp"
+    android:id="@+id/scroll_temperature"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.main.fragments.home.fragments.TemperatureFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="12dp">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="7.5dp"
             android:backgroundTint="@color/backgroundWarm"
-            app:cardCornerRadius="20dp"
+            app:cardCornerRadius="15dp"
             app:cardElevation="0dp">
 
             <FrameLayout
@@ -33,7 +33,7 @@
                     android:layout_height="match_parent"
                     android:backgroundTint="@color/background"
                     app:cardCornerRadius="100sp"
-                    app:cardElevation="0dp" />
+                    app:cardElevation="0dp"/>
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="140sp"
@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:layout_margin="20dp"
-                android:gravity="right"
+                android:gravity="end"
                 android:text="40.55°C"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
             android:backgroundTint="@color/backgroundRegular"
-            app:cardCornerRadius="20dp"
+            app:cardCornerRadius="15dp"
             app:cardElevation="0dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -110,6 +110,7 @@
                         android:id="@+id/img_description"
                         android:layout_width="40sp"
                         android:layout_height="40sp"
+                        android:contentDescription="info"
                         android:src="@drawable/ico_warning"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -135,7 +136,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
             android:backgroundTint="@color/backgroundLight"
-            app:cardCornerRadius="20dp"
+            app:cardCornerRadius="15dp"
             app:cardElevation="0dp">
 
             <LinearLayout
@@ -235,6 +236,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingVertical="10dp"
+                    android:paddingStart="0dp"
                     android:paddingEnd="10dp">
 
                     <androidx.cardview.widget.CardView
@@ -255,8 +257,8 @@
                         android:background="@color/transparent"
                         app:itemActiveIndicatorStyle="@null"
                         app:itemIconSize="16sp"
-                        app:itemTextColor="@color/bottom_nav_color"
                         app:itemRippleColor="@null"
+                        app:itemTextColor="@color/bottom_nav_color"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -264,10 +266,6 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
-
         </androidx.cardview.widget.CardView>
-
     </LinearLayout>
-
-
-</FrameLayout>
+</ScrollView>

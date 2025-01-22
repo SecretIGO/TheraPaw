@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
             android:backgroundTint="@color/backgroundWarm"
-            app:cardCornerRadius="20dp"
+            app:cardCornerRadius="15dp"
             app:cardElevation="0dp">
 
             <LinearLayout
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
             android:backgroundTint="@color/backgroundRegular"
-            app:cardCornerRadius="20dp"
+            app:cardCornerRadius="15dp"
             app:cardElevation="0dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout

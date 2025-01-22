@@ -5,14 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.experiments.therapaw.R
 import com.experiments.therapaw.databinding.FragmentHomeBinding
 import com.experiments.therapaw.view.main.fragments.home.fragments.HeartbeatFragment
 import com.experiments.therapaw.view.main.fragments.home.fragments.LocationFragment
 import com.experiments.therapaw.view.main.fragments.home.fragments.TemperatureFragment
+import com.experiments.therapaw.viewmodel.SharedViewModel
 
 class HomeFragment : Fragment() {
     private lateinit var binding : FragmentHomeBinding
+    private lateinit var sharedViewModel: SharedViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,7 +27,11 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        sharedViewModel = ViewModelProvider(requireActivity())[SharedViewModel::class.java]
+
         bind()
+
     }
 
     private fun bind(){
@@ -47,6 +54,13 @@ class HomeFragment : Fragment() {
 
         if (currentFragment != null && currentFragment::class.java == fragment::class.java) {
             return false
+        }
+
+        val fragmentName = fragment::class.java.simpleName
+        when (fragmentName) {
+            "TemperatureFragment" -> sharedViewModel.setToolbarTitle("Temperature")
+            "LocationFragment" -> sharedViewModel.setToolbarTitle("Location")
+            "HeartbeatFragment" -> sharedViewModel.setToolbarTitle("Heartbeat")
         }
 
         fragmentManager.beginTransaction()
