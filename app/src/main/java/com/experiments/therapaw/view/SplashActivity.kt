@@ -25,7 +25,7 @@ class SplashActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         Timer().schedule(3000) {
-            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+            MainActivity.launch(this@SplashActivity)
             finish()
         }
 

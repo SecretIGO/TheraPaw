@@ -1,5 +1,7 @@
 package com.experiments.therapaw.view.main
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +13,7 @@ import com.experiments.therapaw.databinding.GenToolbarBinding
 import com.experiments.therapaw.view.main.fragments.data.DataFragment
 import com.experiments.therapaw.view.main.fragments.devices.DevicesFragment
 import com.experiments.therapaw.view.main.fragments.home.HomeFragment
+import com.experiments.therapaw.view.profile.ProfileActivity
 import com.experiments.therapaw.viewmodel.SharedViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -37,6 +40,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun bind(){
         replaceFragment(HomeFragment())
+
+        toolbar.petProfile.setOnClickListener {
+            ProfileActivity.launch(this)
+        }
 
         navbar.navbar.setOnItemSelectedListener {menuItem ->
             val fragment: Fragment = when (menuItem.itemId) {
@@ -70,5 +77,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         return true
+    }
+
+    companion object {
+        fun launch(context: Context) {
+            val intent = Intent(context, MainActivity::class.java)
+            context.startActivity(intent)
+        }
     }
 }

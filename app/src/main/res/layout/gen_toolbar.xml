@@ -22,7 +22,7 @@
                 android:gravity="center_vertical"
                 android:paddingHorizontal="10dp"
                 android:paddingVertical="15dp"
-                app:layout_constraintEnd_toStartOf="@+id/linearLayout"
+                app:layout_constraintEnd_toStartOf="@+id/pet_profile"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -45,7 +45,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/linearLayout"
+                android:id="@+id/pet_profile"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:gravity="center_vertical"
