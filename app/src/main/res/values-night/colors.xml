@@ -3,7 +3,7 @@
     <color name="black">#222222</color>
     <color name="white">#EAEAEA</color>
 
-    <color name="background">#222222</color>
+    <color name="background">#000000</color>
 
     <color name="primary">#1C3250</color>
     <color name="ico_primary">#EAEAEA</color>
