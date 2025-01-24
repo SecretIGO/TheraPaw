@@ -25,7 +25,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/primary" />
 
-
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -193,7 +192,7 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/horizontal_rule2"
-            android:layout_width="50dp"
+            android:layout_width="40dp"
             android:layout_height="3dp"
             android:backgroundTint="@color/primary"
             android:layout_marginTop="20dp"
@@ -204,9 +203,10 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="107dp"
-            android:layout_height="63dp"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
             android:src="@drawable/bannerlogo_therapaw"
+            android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/horizontal_rule2" />
