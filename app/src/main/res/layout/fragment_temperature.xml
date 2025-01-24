@@ -5,7 +5,7 @@
     android:id="@+id/scroll_temperature"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.main.fragments.home.fragments.TemperatureFragment">
+    tools:context=".ui.view.main.fragments.home.fragments.TemperatureFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
