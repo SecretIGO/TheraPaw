@@ -1,4 +1,4 @@
-package com.experiments.therapaw.view.profile
+package com.experiments.therapaw.ui.view.profile
 
 import android.content.Context
 import android.content.Intent
@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.experiments.therapaw.R
 import com.experiments.therapaw.databinding.ActivityProfileBinding
-import com.experiments.therapaw.utils.dpToPx
-import com.experiments.therapaw.view.profile.adapters.ProfileAdapter
+import com.experiments.therapaw.data.utils.dpToPx
+import com.experiments.therapaw.ui.adapter.ProfileAdapter
 import kotlin.math.abs
 
 class ProfileActivity : AppCompatActivity() {

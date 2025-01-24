@@ -1,18 +1,14 @@
-package com.experiments.therapaw.view
+package com.experiments.therapaw.ui.view
 
 import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.animation.PropertyValuesHolder
-import android.animation.ValueAnimator
-import android.content.Intent
-import android.media.Image
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.experiments.therapaw.databinding.ActivitySplashBinding
-import com.experiments.therapaw.view.main.MainActivity
+import com.experiments.therapaw.ui.view.main.MainActivity
 import java.util.Timer
 import kotlin.concurrent.schedule
 

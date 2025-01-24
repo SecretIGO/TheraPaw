@@ -1,4 +1,4 @@
-package com.experiments.therapaw.view.main
+package com.experiments.therapaw.ui.view.main
 
 import android.content.Context
 import android.content.Intent
@@ -10,10 +10,10 @@ import com.experiments.therapaw.R
 import com.experiments.therapaw.databinding.ActivityMainBinding
 import com.experiments.therapaw.databinding.GenNavbarBinding
 import com.experiments.therapaw.databinding.GenToolbarBinding
-import com.experiments.therapaw.view.main.fragments.data.DataFragment
-import com.experiments.therapaw.view.main.fragments.devices.DevicesFragment
-import com.experiments.therapaw.view.main.fragments.home.HomeFragment
-import com.experiments.therapaw.view.profile.ProfileActivity
+import com.experiments.therapaw.ui.view.main.fragments.data.DataFragment
+import com.experiments.therapaw.ui.view.main.fragments.devices.DevicesFragment
+import com.experiments.therapaw.ui.view.main.fragments.home.HomeFragment
+import com.experiments.therapaw.ui.view.profile.ProfileActivity
 import com.experiments.therapaw.viewmodel.SharedViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         fun launch(context: Context) {
-            val intent = Intent(context, MainActivity::class.java)
+            val intent = Intent(context, com.experiments.therapaw.ui.view.main.MainActivity::class.java)
             context.startActivity(intent)
         }
     }
