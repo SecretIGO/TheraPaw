@@ -37,10 +37,24 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    sourceSets {
+        getByName("main") {
+            res {
+                srcDirs(
+                    "src\\main\\res",
+                    "src\\main\\res\\layouts\\auth\\signin",
+                    "src\\main\\res\\layouts\\auth\\signup",
+                    "src\\main\\res\\layouts\\main\\main",
+                    "src\\main\\res\\layouts\\profile\\pet",
+                    "src\\main\\res\\layouts\\profile\\user",
+                    "src\\main\\res\\layouts\\splash\\splash"
+                )
+            }
+        }
+    }
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
