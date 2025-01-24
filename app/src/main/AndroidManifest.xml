@@ -13,19 +13,19 @@
         android:theme="@style/Theme.TheraPaw"
         tools:targetApi="31">
         <activity
-            android:name=".view.auth.SignUpActivity"
+            android:name=".ui.view.auth.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".view.auth.SignInActivity"
+            android:name=".ui.view.auth.SignInActivity"
             android:exported="false" />
         <activity
-            android:name=".view.profile.ProfileActivity"
+            android:name=".ui.view.profile.ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".view.main.MainActivity"
+            android:name=".ui.view.main.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".view.SplashActivity"
+            android:name=".ui.view.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "140280104649",
+    "firebase_url": "https://therapaw-d91b8-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "therapaw-d91b8",
+    "storage_bucket": "therapaw-d91b8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:140280104649:android:058091df7c00a1df22af18",
+        "android_client_info": {
+          "package_name": "com.experiments.therapaw"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYJPaYD-ACg-MbSOmy-5O93-d9OQPD3RQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

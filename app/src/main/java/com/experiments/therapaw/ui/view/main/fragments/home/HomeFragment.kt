@@ -1,4 +1,4 @@
-package com.experiments.therapaw.view.main.fragments.home
+package com.experiments.therapaw.ui.view.main.fragments.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,9 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.experiments.therapaw.R
 import com.experiments.therapaw.databinding.FragmentHomeBinding
-import com.experiments.therapaw.view.main.fragments.home.fragments.HeartbeatFragment
-import com.experiments.therapaw.view.main.fragments.home.fragments.LocationFragment
-import com.experiments.therapaw.view.main.fragments.home.fragments.TemperatureFragment
+import com.experiments.therapaw.ui.view.main.fragments.home.fragments.HeartbeatFragment
+import com.experiments.therapaw.ui.view.main.fragments.home.fragments.LocationFragment
+import com.experiments.therapaw.ui.view.main.fragments.home.fragments.TemperatureFragment
 import com.experiments.therapaw.viewmodel.SharedViewModel
 
 class HomeFragment : Fragment() {

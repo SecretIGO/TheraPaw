@@ -1,6 +1,5 @@
-package com.experiments.therapaw.view.profile.adapters
+package com.experiments.therapaw.ui.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.experiments.therapaw.R
-import com.experiments.therapaw.utils.dpToPx
+import com.experiments.therapaw.data.utils.dpToPx
 
 class ProfileAdapter : RecyclerView.Adapter<ProfileAdapter.CardViewHolder>() {
 

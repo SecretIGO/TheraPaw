@@ -1,4 +1,4 @@
-package com.experiments.therapaw.utils
+package com.experiments.therapaw.data.utils
 
 import android.content.Context
 
