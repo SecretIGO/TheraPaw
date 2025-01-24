@@ -9,6 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.experiments.therapaw.R
+import com.experiments.therapaw.utils.dpToPx
 
 class ProfileAdapter : RecyclerView.Adapter<ProfileAdapter.CardViewHolder>() {
 
@@ -67,10 +68,6 @@ class ProfileAdapter : RecyclerView.Adapter<ProfileAdapter.CardViewHolder>() {
         if (drawableResource != null) {
             imageView.setImageResource(drawableResource)
         }
-    }
-
-    fun Int.dpToPx(context: Context): Int {
-        return (this * context.resources.displayMetrics.density).toInt()
     }
 
     override fun getItemCount(): Int = 3

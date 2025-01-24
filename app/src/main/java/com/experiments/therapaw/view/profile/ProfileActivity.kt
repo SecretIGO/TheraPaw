@@ -2,19 +2,15 @@ package com.experiments.therapaw.view.profile
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Rect
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.experiments.therapaw.R
 import com.experiments.therapaw.databinding.ActivityProfileBinding
+import com.experiments.therapaw.utils.dpToPx
 import com.experiments.therapaw.view.profile.adapters.ProfileAdapter
 import kotlin.math.abs
 
@@ -94,6 +90,9 @@ class ProfileActivity : AppCompatActivity() {
                         child.background?.setTint(resources.getColor(R.color.primary))
                     } else {
                         child.background?.setTint(resources.getColor(R.color.backgroundRegular))
+                        child.setOnClickListener{
+                            Toast.makeText(this, "Add User", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
                 1 -> {
@@ -101,6 +100,9 @@ class ProfileActivity : AppCompatActivity() {
                     opacity = 0.5f + 0.5f * (1 - distanceFromCenter / center)
                     if (layoutManager.itemCount <= 2){
                         child.background?.setTint(resources.getColor(R.color.backgroundRegular))
+                        child.setOnClickListener{
+                            Toast.makeText(this, "Add User", Toast.LENGTH_SHORT).show()
+                        }
                     } else {
                         child.background?.setTint(resources.getColor(R.color.primary))
                     }
@@ -116,11 +118,6 @@ class ProfileActivity : AppCompatActivity() {
             child.scaleY = scale
             child.alpha = opacity.coerceIn(0.3f, 1.0f)
         }
-    }
-
-
-    fun Int.dpToPx(context: Context): Int {
-        return (this * context.resources.displayMetrics.density).toInt()
     }
 
     companion object {
