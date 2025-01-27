@@ -22,11 +22,16 @@ class UserViewModel : ViewModel() {
 
     fun addUserData(
         userInformation: UserModel,
-        img: ByteArray,
+        img: ByteArray?,
         context: Context,
         onUserDataAdded: () -> Unit
     ) {
-        val filePath = saveImageToInternalStorage(context, img, "${userInformation.uid}.jpg")
+        val filePath = if (img != null) {
+            saveImageToInternalStorage(context, img, "${userInformation.uid}.jpg")
+        } else {
+            null
+        }
+
         if (filePath != null) {
             userInformation.profilePicture = filePath
 

@@ -6,6 +6,7 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.experiments.therapaw.databinding.ActivitySplashBinding
@@ -30,6 +31,7 @@ class SplashActivity : AppCompatActivity() {
 
         Timer().schedule(3000) {
             if (auth.uid != null){
+                Toast.makeText(this@SplashActivity, auth.uid, Toast.LENGTH_SHORT).show()
                 MainActivity.launch(this@SplashActivity)
             } else {
                 SignUpActivity.launch(this@SplashActivity)
