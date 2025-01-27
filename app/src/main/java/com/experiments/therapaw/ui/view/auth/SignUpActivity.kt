@@ -10,9 +10,13 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.experiments.therapaw.data.model.AuthModel
 import com.experiments.therapaw.data.model.UserModel
 import com.experiments.therapaw.data.states.AuthenticationStates
+import com.experiments.therapaw.data.utils.createAuthModel
+import com.experiments.therapaw.data.utils.createUserModel
 import com.experiments.therapaw.data.utils.saveImageToInternalStorage
+import com.experiments.therapaw.data.utils.signup
 import com.experiments.therapaw.databinding.ActivitySignUpBinding
 import com.experiments.therapaw.ui.view.auth.viewmodel.AuthViewmodel
 import com.experiments.therapaw.ui.view.auth.viewmodel.UserViewModel
@@ -42,59 +46,32 @@ class SignUpActivity : AppCompatActivity() {
                 resultLauncher.launch("image/*")
             }
             btnSignup.setOnClickListener {
-                signup()
-            }
-        }
-    }
-
-    private fun signup() {
-        lifecycleScope.launch {
-            try {
-                auth.setAuthState(AuthenticationStates.Loading)
-
-                val result = auth.signUp(
-                    binding.inputEmail.text.toString(),
-                    binding.inputPassword.text.toString()
+                val authValues =
+                    createAuthModel(inputEmail.text.toString(), inputPassword.text.toString())
+                val userValues = createUserModel(
+                    "",
+                    inputUsername.text.toString(),
+                    inputEmail.text.toString(),
+                    ""
                 )
-
-                if (result == AuthenticationStates.SignedUp) {
-                    with(binding) {
-                        val bitmap = (binding.imgImageSelector.drawable as BitmapDrawable).bitmap
-                        val baos = ByteArrayOutputStream()
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos)
-
-                        val filePath = saveImageToInternalStorage(
+                lifecycleScope.launch {
+                    try {
+                        signup(
                             this@SignUpActivity,
-                            baos.toByteArray(),
-                            "${auth.getCurrentUserUid()}.jpg"
-                        )
-
-                        if (filePath != null) {
-                            val userinfo = UserModel(
-                                auth.getCurrentUserUid().toString(),
-                                inputUsername.text.toString(),
-                                inputEmail.text.toString(),
-                                filePath,
-                                null
-                            )
-
-                            userViewmodel.addUserData(userinfo, baos.toByteArray(), this@SignUpActivity) {
-                                auth.setAuthState(AuthenticationStates.UserCreated)
-
-                                if (auth.getAuthStates().value == AuthenticationStates.UserCreated) {
-                                    MainActivity.launch(this@SignUpActivity)
-                                }
+                            bitmap = (imgImageSelector.drawable as? BitmapDrawable)?.bitmap,
+                            authValues = authValues,
+                            userValues = userValues,
+                            auth = auth,
+                            saveImageToInternalStorage = ::saveImageToInternalStorage,
+                            addUserData = { userInfo, imageBytes, context, onComplete ->
+                                userViewmodel.addUserData(userInfo, imageBytes, context, onComplete)
                             }
-                        } else {
-                            Toast.makeText(this@SignUpActivity, "Failed to save image", Toast.LENGTH_SHORT).show()
-                            auth.setAuthState(AuthenticationStates.Error)
-                        }
+                        )
+                    } catch (e: Exception) {
+                        Toast.makeText(this@SignUpActivity, "Signup Failed!", Toast.LENGTH_SHORT).show()
+                        auth.setAuthState(AuthenticationStates.Error)
                     }
-                } else {
-                    auth.setAuthState(AuthenticationStates.Error)
                 }
-            } catch (e: Exception) {
-                auth.setAuthState(AuthenticationStates.Error)
             }
         }
     }
