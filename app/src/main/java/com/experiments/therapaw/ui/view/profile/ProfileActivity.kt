@@ -13,6 +13,7 @@ import com.experiments.therapaw.data.model.UserModel
 import com.experiments.therapaw.databinding.ActivityProfileBinding
 import com.experiments.therapaw.data.utils.dpToPx
 import com.experiments.therapaw.ui.adapter.ProfileAdapter
+import com.experiments.therapaw.ui.view.auth.viewmodel.AuthViewmodel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.database.database
@@ -20,12 +21,14 @@ import kotlin.math.abs
 
 class ProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProfileBinding
+    private lateinit var authViewmodel: AuthViewmodel
     private val database = Firebase.database.reference
     private val auth = Firebase.auth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
+        authViewmodel = AuthViewmodel()
         setContentView(binding.root)
 
         bind()
@@ -97,16 +100,12 @@ class ProfileActivity : AppCompatActivity() {
                 }
             })
 
-            // Fetch user data and set adapter
             fetchUserData { userInfo ->
-                rvProfiles.adapter = ProfileAdapter(userInfo) {
-                    Toast.makeText(this@ProfileActivity, "Add User clicked!", Toast.LENGTH_SHORT)
-                        .show()
-                }
+                rvProfiles.adapter = ProfileAdapter(userInfo, authViewmodel, this@ProfileActivity)
 
                 rvProfiles.post {
                     if ((rvProfiles.adapter?.itemCount ?: 0) > 2) {
-                        rvProfiles.scrollToPosition(1)
+                        rvProfiles.scrollToPosition(2)
                         scaleCenterItem(rvProfiles)
                     }
                 }
