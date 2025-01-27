@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,15 +8,15 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="12dp">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:backgroundTint="@color/backgroundWarm"
+            android:layout_marginBottom="10dp"
+            android:backgroundTint="@color/backgroundCold"
             app:cardCornerRadius="15dp"
             app:cardElevation="0dp">
 
@@ -32,31 +32,31 @@
                     android:layout_width="60sp"
                     android:layout_height="60dp"
                     android:src="@drawable/ico_home"
-                    app:tint="@color/textWarm" />
+                    app:tint="@color/textCold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="147"
-                    android:textColor="@color/textWarm"
-                    android:textStyle="bold"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/placeholder_val"
+                    android:textColor="@color/textCold"
                     android:textSize="22sp"
-                    android:layout_marginBottom="10dp"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="BPM"
-                    android:textColor="@color/textWarm"
-                    android:textStyle="bold"
-                    android:textSize="14sp"/>
+                    android:text="@string/lbl_sh_bpm"
+                    android:textColor="@color/textCold"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Beats Per Minute"
-                    android:textStyle="bold"
-                    android:textSize="14sp"/>
+                    android:text="@string/lbl_lh_bpm"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -74,17 +74,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:paddingVertical="10dp"
-                android:paddingHorizontal="15dp">
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="15dp">
 
                 <TextView
                     android:id="@+id/lbl_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingBottom="10dp"
-                    android:text="Description"
-                    android:textStyle="bold"
+                    android:text="@string/lbl_description"
                     android:textSize="16sp"
+                    android:textStyle="bold"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -108,9 +108,9 @@
                         android:layout_marginStart="15sp"
                         android:text="Your pet's heartbeat is exceeding normal range which might indicate tiredness or exhaustion.\n\nA small dog's heart rate is normally 90 to 140 beats per minute. A fast pulse rate might be something as simple as anxiety, but it can also indicate many other conditions including blood loss, dehydration, fever and heatstroke."
                         android:textSize="14sp"
-                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/img_description"/>
+                        app:layout_constraintStart_toEndOf="@id/img_description"
+                        app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -118,4 +118,4 @@
 
     </LinearLayout>
 
-</FrameLayout>
+</ScrollView>

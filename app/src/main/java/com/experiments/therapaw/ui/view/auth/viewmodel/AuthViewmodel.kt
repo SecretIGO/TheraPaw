@@ -23,7 +23,7 @@ class AuthViewmodel: ViewModel() {
 
     fun getAuthStates() : LiveData<AuthenticationStates> = authenticationStates
 
-    fun setAuthStates(newState: AuthenticationStates) {
+    fun setAuthState(newState: AuthenticationStates) {
         authenticationStates.value = newState
     }
 

@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="7.5dp"
-            android:backgroundTint="@color/backgroundWarm"
+            android:backgroundTint="@color/backgroundCold"
             app:cardCornerRadius="15dp"
             app:cardElevation="0dp">
 
@@ -39,16 +39,17 @@
                     android:layout_width="140sp"
                     android:layout_height="140sp"
                     android:layout_gravity="center"
-                    android:backgroundTint="@color/backgroundWarm"
+                    android:backgroundTint="@color/backgroundCold"
                     app:cardCornerRadius="100sp"
                     app:cardElevation="0dp">
 
                     <TextView
+                        android:id="@+id/val_tempText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="High"
-                        android:textColor="@color/textWarm"
+                        android:text="@string/placeholder_valText"
+                        android:textColor="@color/textCold"
                         android:textSize="22sp"
                         android:textStyle="bold" />
                 </androidx.cardview.widget.CardView>
@@ -60,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|start"
                 android:layout_margin="20dp"
-                android:text="105°F"
+                android:text="@string/placeholder_valFahrenheit"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -70,7 +71,7 @@
                 android:layout_gravity="bottom|end"
                 android:layout_margin="20dp"
                 android:gravity="end"
-                android:text="40.55°C"
+                android:text="@string/placeholder_valCelsius"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -96,7 +97,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingBottom="10dp"
-                    android:text="Description"
+                    android:text="@string/lbl_description"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -169,23 +170,25 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
-                                android:text="Max Temp"
+                                android:text="@string/lbl_sh_max_temp"
                                 android:textColor="@color/white"
                                 android:textSize="12sp"
                                 android:textStyle="bold" />
 
                             <TextView
+                                android:id="@+id/val_maxTempCelsius"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="40.55°C"
+                                android:text="@string/placeholder_valCelsius"
                                 android:textColor="@color/white"
                                 android:textSize="20sp"
                                 android:textStyle="bold" />
 
                             <TextView
+                                android:id="@+id/val_maxTempFahrenheit"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="105°F"
+                                android:text="@string/placeholder_valFahrenheit"
                                 android:textColor="@color/white" />
 
                         </LinearLayout>
@@ -210,21 +213,23 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
-                                android:text="Min Temp"
+                                android:text="@string/lbl_sh_min_temp"
                                 android:textSize="12sp"
                                 android:textStyle="bold" />
 
                             <TextView
+                                android:id="@+id/val_minTempCelsius"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="38.55°C"
+                                android:text="@string/placeholder_valCelsius"
                                 android:textSize="20sp"
                                 android:textStyle="bold" />
 
                             <TextView
+                                android:id="@+id/val_minTempFahrenheit"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="101.39°F" />
+                                android:text="@string/placeholder_valFahrenheit" />
 
                         </LinearLayout>
 

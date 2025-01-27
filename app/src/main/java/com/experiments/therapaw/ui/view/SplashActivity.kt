@@ -3,17 +3,25 @@ package com.experiments.therapaw.ui.view
 import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.experiments.therapaw.databinding.ActivitySplashBinding
+import com.experiments.therapaw.ui.view.auth.SignUpActivity
+import com.experiments.therapaw.ui.view.auth.viewmodel.AuthViewmodel
 import com.experiments.therapaw.ui.view.main.MainActivity
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import java.util.Timer
 import kotlin.concurrent.schedule
 
+@SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
     private lateinit var binding : ActivitySplashBinding
+
+    private val auth = Firebase.auth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,7 +29,11 @@ class SplashActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         Timer().schedule(3000) {
-            MainActivity.launch(this@SplashActivity)
+            if (auth.uid != null){
+                MainActivity.launch(this@SplashActivity)
+            } else {
+                SignUpActivity.launch(this@SplashActivity)
+            }
             finish()
         }
 
@@ -29,21 +41,20 @@ class SplashActivity : AppCompatActivity() {
         animateCard(binding.animCard2)
         animateCard(binding.animCard3)
         animateLogo(binding.animLogo)
-
     }
 
     private fun animateLogo(card: CardView){
-        val growAnimatorX = ObjectAnimator.ofFloat(card, "scaleX", 0.1f, 1.3f).apply {
+        val growAnimatorX = ObjectAnimator.ofFloat(card, "scaleX", 0.1f, 1.2f).apply {
             duration = 600
         }
-        val growAnimatorY = ObjectAnimator.ofFloat(card, "scaleY", 0.1f, 1.3f).apply {
+        val growAnimatorY = ObjectAnimator.ofFloat(card, "scaleY", 0.1f, 1.2f).apply {
             duration = 600
         }
 
-        val shrinkAnimatorX = ObjectAnimator.ofFloat(card, "scaleX", 1.3f, 1f).apply {
+        val shrinkAnimatorX = ObjectAnimator.ofFloat(card, "scaleX", 1.2f, 1f).apply {
             duration = 300
         }
-        val shrinkAnimatorY = ObjectAnimator.ofFloat(card, "scaleY", 1.3f, 1f).apply {
+        val shrinkAnimatorY = ObjectAnimator.ofFloat(card, "scaleY", 1.2f, 1f).apply {
             duration = 300
         }
 
