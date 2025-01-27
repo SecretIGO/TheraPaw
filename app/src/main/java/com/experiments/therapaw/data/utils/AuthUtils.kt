@@ -51,6 +51,20 @@ suspend fun signup(
     }
 }
 
+suspend fun signin(
+    context: Context,
+    authValues: AuthModel,
+    auth: AuthViewmodel
+){
+    val result = auth.signIn(authValues.email, authValues.password)
+    if(result == AuthenticationStates.SignedIn){
+        MainActivity.launch(context)
+    } else {
+        showError(auth, context, "Signin failed!")
+    }
+
+}
+
 private suspend fun handleDataPathing(
     context: Context,
     bitmap: Bitmap?,

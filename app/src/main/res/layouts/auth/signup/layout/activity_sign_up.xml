@@ -102,6 +102,16 @@
         android:layout_rowWeight="1"
         android:layout_columnWeight="1">
 
+        <TextView
+            android:id="@+id/btn_switchToLogin"
+            android:layout_width="match_parent"
+            android:layout_height="30sp"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="Signin"
+            />
+
         <Button
             android:id="@+id/btn_signup"
             android:layout_width="match_parent"

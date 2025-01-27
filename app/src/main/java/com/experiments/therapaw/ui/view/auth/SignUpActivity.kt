@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -45,6 +46,7 @@ class SignUpActivity : AppCompatActivity() {
             btnImageSelector.setOnClickListener {
                 resultLauncher.launch("image/*")
             }
+
             btnSignup.setOnClickListener {
                 val authValues =
                     createAuthModel(inputEmail.text.toString(), inputPassword.text.toString())
@@ -72,6 +74,12 @@ class SignUpActivity : AppCompatActivity() {
                         auth.setAuthState(AuthenticationStates.Error)
                     }
                 }
+            }
+
+            btnSwitchToLogin.setOnClickListener {
+                Log.d("test", "marco")
+
+                SignInActivity.launch(this@SignUpActivity)
             }
         }
     }
