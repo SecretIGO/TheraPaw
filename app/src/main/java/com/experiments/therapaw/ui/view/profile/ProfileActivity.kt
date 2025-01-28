@@ -101,7 +101,7 @@ class ProfileActivity : AppCompatActivity() {
             })
 
             fetchUserData { userInfo ->
-                rvProfiles.adapter = ProfileAdapter(userInfo, authViewmodel, this@ProfileActivity)
+                rvProfiles.adapter = ProfileAdapter(this@ProfileActivity, userInfo, authViewmodel)
 
                 rvProfiles.post {
                     if ((rvProfiles.adapter?.itemCount ?: 0) > 2) {
