@@ -14,4 +14,8 @@
     <string name="lbl_description">Description</string>
     <string name="lbl_lh_bpm">Beats Per Minute</string>
     <string name="lbl_sh_bpm">BPM</string>
+
+    <string name="drawer_open">open</string>
+    <string name="drawer_close">close</string>
+
 </resources>
