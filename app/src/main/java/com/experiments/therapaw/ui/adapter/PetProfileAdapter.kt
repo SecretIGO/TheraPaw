@@ -35,7 +35,7 @@ class PetProfileAdapter(
 
     }
 
-    override fun getItemCount(): Int = 2
+    override fun getItemCount(): Int = 1
 
     private fun handleSmallItems(holder: CardViewHolder, imageView: ImageView, position: Int) {
         when (position) {

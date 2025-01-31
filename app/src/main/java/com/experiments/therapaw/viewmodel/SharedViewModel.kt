@@ -11,4 +11,11 @@ class SharedViewModel : ViewModel() {
     fun setToolbarTitle(title: String) {
         _toolbarTitle.value = title
     }
+
+    private val _menuActive = MutableLiveData<Array<String>>()
+    val menuActive: LiveData<Array<String>> get() = _menuActive
+
+    fun setMenuActive(active: Array<String>){
+        _menuActive.value = active
+    }
 }
