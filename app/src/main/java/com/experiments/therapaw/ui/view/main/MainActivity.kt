@@ -3,9 +3,12 @@ package com.experiments.therapaw.ui.view.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import com.experiments.therapaw.R
 import com.experiments.therapaw.databinding.ActivityMainBinding
@@ -26,8 +29,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navbar: GenNavbarBinding
     private lateinit var drawer: GenAppdrawerBinding
     private lateinit var appdrawer: ActionBarDrawerToggle
-
-    private val sharedViewModel: SharedViewModel by viewModels()
+    private lateinit var sharedViewModel: SharedViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         toolbar = GenToolbarBinding.bind(binding.toolbar.root)
         navbar = GenNavbarBinding.bind(binding.bottomNavbar.root)
         drawer = GenAppdrawerBinding.bind(binding.appdrawer.root)
+        sharedViewModel = SharedViewModel()
 
         setContentView(binding.root)
 
@@ -70,6 +73,52 @@ class MainActivity : AppCompatActivity() {
 
         binding.appdrawer.cardProfile.setOnClickListener{
             ProfileActivity.launch(this@MainActivity)
+        }
+
+        toolbar.btnAppdrawer.setOnClickListener{ view ->
+            (this@MainActivity).openCloseNavigationDrawer(view)
+        }
+
+        val homeCard = drawer.navHome
+        val submenuHome = drawer.submenuHome
+        val homeDropdownArrow = drawer.homeDropdownArrow
+
+        homeCard.setOnClickListener {
+            submenuHome.visibility = if (submenuHome.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+            homeDropdownArrow.setImageResource(if (submenuHome.visibility == View.VISIBLE) R.drawable.ico_arrow_down else R.drawable.ico_arrow_down)
+        }
+
+        val temperatureCard = drawer.navTemperature
+        temperatureCard.setOnClickListener {
+            Toast.makeText(this, "Temp fragment", Toast.LENGTH_SHORT).show()
+        }
+
+        val locationCard = drawer.navLocation
+        locationCard.setOnClickListener {
+            Toast.makeText(this, "LOC fragment", Toast.LENGTH_SHORT).show()
+        }
+
+        val heartbeatCard = drawer.navHeartbeat
+        heartbeatCard.setOnClickListener {
+            Toast.makeText(this, "BEAT fragment", Toast.LENGTH_SHORT).show()
+        }
+
+        val devicesCard = drawer.navDevices
+        devicesCard.setOnClickListener {
+            Toast.makeText(this, "DEVICES fragment", Toast.LENGTH_SHORT).show()
+        }
+
+        val dataCard = drawer.navData
+        dataCard.setOnClickListener{
+            Toast.makeText(this, "DATA fragment", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun openCloseNavigationDrawer(view: View) {
+        if (binding.main.isDrawerOpen(GravityCompat.START)) {
+            binding.main.closeDrawer(GravityCompat.START)
+        } else {
+            binding.main.openDrawer(GravityCompat.START)
         }
     }
 
