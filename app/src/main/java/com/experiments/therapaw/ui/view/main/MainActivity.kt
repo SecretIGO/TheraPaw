@@ -2,6 +2,7 @@ package com.experiments.therapaw.ui.view.main
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -10,18 +11,27 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.map
+import com.bumptech.glide.Glide
 import com.experiments.therapaw.R
+import com.experiments.therapaw.data.model.UserModel
+import com.experiments.therapaw.data.utils.fetchUserData
 import com.experiments.therapaw.databinding.ActivityMainBinding
 import com.experiments.therapaw.databinding.GenAppdrawerBinding
 import com.experiments.therapaw.databinding.GenNavbarBinding
 import com.experiments.therapaw.databinding.GenToolbarBinding
 import com.experiments.therapaw.ui.view.auth.SignUpActivity
+import com.experiments.therapaw.ui.view.auth.viewmodel.AuthViewmodel
 import com.experiments.therapaw.ui.view.main.fragments.data.DataFragment
 import com.experiments.therapaw.ui.view.main.fragments.devices.DevicesFragment
 import com.experiments.therapaw.ui.view.main.fragments.home.HomeFragment
+import com.experiments.therapaw.ui.view.main.fragments.home.fragments.HeartbeatFragment
+import com.experiments.therapaw.ui.view.main.fragments.home.fragments.LocationFragment
+import com.experiments.therapaw.ui.view.main.fragments.home.fragments.TemperatureFragment
 import com.experiments.therapaw.ui.view.profile.PetProfileActivity
 import com.experiments.therapaw.ui.view.profile.ProfileActivity
 import com.experiments.therapaw.viewmodel.SharedViewModel
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -29,6 +39,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navbar: GenNavbarBinding
     private lateinit var drawer: GenAppdrawerBinding
     private lateinit var appdrawer: ActionBarDrawerToggle
+
+    private lateinit var auth: AuthViewmodel
     private lateinit var sharedViewModel: SharedViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +49,8 @@ class MainActivity : AppCompatActivity() {
         toolbar = GenToolbarBinding.bind(binding.toolbar.root)
         navbar = GenNavbarBinding.bind(binding.bottomNavbar.root)
         drawer = GenAppdrawerBinding.bind(binding.appdrawer.root)
+
+        auth = AuthViewmodel()
         sharedViewModel = SharedViewModel()
 
         setContentView(binding.root)
@@ -49,6 +63,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun bind() {
+        fetchUserData(this@MainActivity) { userInfo ->
+            onUserDataFetched(userInfo)
+        }
+
         replaceFragment(HomeFragment())
 
         toolbar.petProfile.setOnClickListener {
@@ -71,11 +89,11 @@ class MainActivity : AppCompatActivity() {
         binding.main.addDrawerListener(appdrawer)
         appdrawer.syncState()
 
-        binding.appdrawer.cardProfile.setOnClickListener{
+        binding.appdrawer.cardProfile.setOnClickListener {
             ProfileActivity.launch(this@MainActivity)
         }
 
-        toolbar.btnAppdrawer.setOnClickListener{ view ->
+        toolbar.btnAppdrawer.setOnClickListener { view ->
             (this@MainActivity).openCloseNavigationDrawer(view)
         }
 
@@ -84,8 +102,17 @@ class MainActivity : AppCompatActivity() {
         val homeDropdownArrow = drawer.homeDropdownArrow
 
         homeCard.setOnClickListener {
-            submenuHome.visibility = if (submenuHome.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+            submenuHome.visibility =
+                if (submenuHome.visibility == View.VISIBLE) View.GONE else View.VISIBLE
             homeDropdownArrow.setImageResource(if (submenuHome.visibility == View.VISIBLE) R.drawable.ico_arrow_down else R.drawable.ico_arrow_down)
+        }
+
+        bindNavigation()
+        bindNavigationSettings()
+
+        drawer.navHome.setOnClickListener{
+            replaceFragment(HomeFragment())
+            sharedViewModel.setMenuActive(arrayOf("Home"))
         }
 
         val temperatureCard = drawer.navTemperature
@@ -103,14 +130,111 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "BEAT fragment", Toast.LENGTH_SHORT).show()
         }
 
-        val devicesCard = drawer.navDevices
-        devicesCard.setOnClickListener {
-            Toast.makeText(this, "DEVICES fragment", Toast.LENGTH_SHORT).show()
+        drawer.navDevices.setOnClickListener{
+            replaceFragment(DevicesFragment())
+            sharedViewModel.setMenuActive(arrayOf("Devices"))
         }
 
-        val dataCard = drawer.navData
-        dataCard.setOnClickListener{
-            Toast.makeText(this, "DATA fragment", Toast.LENGTH_SHORT).show()
+        drawer.navData.setOnClickListener {
+            replaceFragment(DataFragment())
+            sharedViewModel.setMenuActive(arrayOf("Data"))
+        }
+    }
+
+    private fun bindNavigationSettings() {
+        val visible = View.VISIBLE
+        val invisible = View.GONE
+        val selectedBackground = ColorStateList.valueOf(getColor(R.color.primary))
+        val selectedTextColor = getColor(R.color.white)
+        val selectedIconColor = ColorStateList.valueOf(getColor(R.color.white))
+
+        sharedViewModel.menuActive.observe(this@MainActivity) { activeMenu ->
+            defaultSettings()
+
+            when {
+                activeMenu.contentEquals(arrayOf("Home")) -> {
+                    drawer.navHome.backgroundTintList = selectedBackground
+                    drawer.submenuHome.visibility = visible
+                    drawer.lblHome.setTextColor(selectedTextColor)
+                    drawer.homeDropdownArrow.imageTintList = selectedIconColor
+                    drawer.iconHome.imageTintList = selectedIconColor
+
+                    when (activeMenu.getOrNull(1)) {
+                        "Temperature" -> {
+                            drawer.navTemperature.visibility = visible
+                            drawer.navTemperature.backgroundTintList = selectedBackground
+                        }
+                        "Location" -> {
+                            drawer.navLocation.visibility = visible
+                            drawer.navLocation.backgroundTintList = selectedBackground
+                        }
+                        "Heartbeat" -> drawer.navHeartbeat.visibility = View.VISIBLE
+                    }
+                }
+
+                activeMenu.contentEquals(arrayOf("Devices")) -> {
+                    drawer.navDevices.backgroundTintList = selectedBackground
+                    drawer.lblDevices.setTextColor(selectedTextColor)
+                    drawer.iconDevices.imageTintList = selectedIconColor
+                    drawer.submenuHome.visibility = invisible
+                }
+
+                activeMenu.contentEquals(arrayOf("Data")) -> {
+                    drawer.navData.backgroundTintList = selectedBackground
+                    drawer.lblData.setTextColor(selectedTextColor)
+                    drawer.iconData.imageTintList = selectedIconColor
+                    drawer.submenuHome.visibility = invisible
+                }
+            }
+        }
+    }
+
+    private fun bindNavigation() {
+        when {
+            sharedViewModel.menuActive.value.contentEquals(arrayOf("Home")) ->
+                replaceFragment(HomeFragment())
+
+            sharedViewModel.menuActive.value.contentEquals(arrayOf("Devices")) ->
+                replaceFragment(DevicesFragment())
+
+            sharedViewModel.menuActive.value.contentEquals(arrayOf("Data")) ->
+                replaceFragment(DataFragment())
+        }
+    }
+
+    private fun defaultSettings(){
+        val visible = View.VISIBLE
+        val invisible = View.GONE
+        val defaultBackground = ColorStateList.valueOf(getColor(R.color.background))
+        val defaultSubmenuBackground = ColorStateList.valueOf(getColor(R.color.backgroundLight))
+        val defaultTextColor = getColor(R.color.text)
+        val defaultIconColor = ColorStateList.valueOf(getColor(R.color.text))
+
+        with(binding){
+            appdrawer.navHome.backgroundTintList = defaultBackground
+            appdrawer.lblHome.setTextColor(defaultTextColor)
+            appdrawer.iconHome.imageTintList = defaultIconColor
+            appdrawer.homeDropdownArrow.imageTintList = defaultIconColor
+
+            appdrawer.navDevices.backgroundTintList = defaultBackground
+            appdrawer.lblDevices.setTextColor(defaultTextColor)
+            appdrawer.iconDevices.imageTintList = defaultIconColor
+
+            appdrawer.navData.backgroundTintList = defaultBackground
+            appdrawer.lblData.setTextColor(defaultTextColor)
+            appdrawer.iconData.imageTintList = defaultIconColor
+
+            appdrawer.navSettings.backgroundTintList = defaultBackground
+            appdrawer.lblSettings.setTextColor(defaultTextColor)
+            appdrawer.iconSettings.imageTintList = defaultIconColor
+        }
+    }
+
+
+    private fun onUserDataFetched(userInfo: UserModel) {
+        with(binding) {
+            appdrawer.textUsername.text = userInfo.username
+            appdrawer.textEmail.text = userInfo.email
         }
     }
 
@@ -137,9 +261,9 @@ class MainActivity : AppCompatActivity() {
 
         val fragmentName = fragment::class.java.simpleName
         when (fragmentName) {
-            "HomeFragment" -> sharedViewModel.setToolbarTitle("Home")
-            "DevicesFragment" -> sharedViewModel.setToolbarTitle("Devices")
-            "DataFragment" -> sharedViewModel.setToolbarTitle("Data")
+            "HomeFragment" -> sharedViewModel.setMenuActive(arrayOf("Home"))
+            "DevicesFragment" -> sharedViewModel.setMenuActive(arrayOf("Devices"))
+            "DataFragment" -> sharedViewModel.setMenuActive(arrayOf("Data"))
         }
 
         return true

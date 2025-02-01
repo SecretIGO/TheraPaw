@@ -1,20 +1,25 @@
 package com.experiments.therapaw.ui.view.main.fragments.home
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.app.NotificationCompat.getColor
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.experiments.therapaw.R
 import com.experiments.therapaw.databinding.FragmentHomeBinding
+import com.experiments.therapaw.ui.view.main.fragments.data.DataFragment
+import com.experiments.therapaw.ui.view.main.fragments.devices.DevicesFragment
 import com.experiments.therapaw.ui.view.main.fragments.home.fragments.HeartbeatFragment
 import com.experiments.therapaw.ui.view.main.fragments.home.fragments.LocationFragment
 import com.experiments.therapaw.ui.view.main.fragments.home.fragments.TemperatureFragment
 import com.experiments.therapaw.viewmodel.SharedViewModel
 
 class HomeFragment : Fragment() {
-    private lateinit var binding : FragmentHomeBinding
+    private lateinit var binding: FragmentHomeBinding
     private lateinit var sharedViewModel: SharedViewModel
 
     override fun onCreateView(
@@ -34,10 +39,12 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun bind(){
+    private fun bind() {
         replaceFragment(TemperatureFragment())
 
-        binding.navbar.setOnItemSelectedListener {menuItem ->
+        bindNavigation()
+
+        binding.navbar.setOnItemSelectedListener { menuItem ->
             val fragment: Fragment = when (menuItem.itemId) {
                 R.id.temperature -> TemperatureFragment()
                 R.id.location -> LocationFragment()
@@ -48,7 +55,15 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun replaceFragment(fragment : Fragment): Boolean {
+    private fun bindNavigation() {
+        when (sharedViewModel.menuActive.value?.getOrNull(1)) {
+            "Temperature" -> replaceFragment(TemperatureFragment())
+            "Location" -> replaceFragment(LocationFragment())
+            "Heartbeat" -> replaceFragment(HeartbeatFragment())
+        }
+    }
+
+    private fun replaceFragment(fragment: Fragment): Boolean {
         val fragmentManager = childFragmentManager
         val currentFragment = fragmentManager.findFragmentById(R.id.fragment_cont)
 
@@ -56,16 +71,17 @@ class HomeFragment : Fragment() {
             return false
         }
 
+        val transaction = fragmentManager.beginTransaction()
+        transaction.replace(R.id.fragment_cont, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+
         val fragmentName = fragment::class.java.simpleName
         when (fragmentName) {
-            "TemperatureFragment" -> sharedViewModel.setToolbarTitle("Temperature")
-            "LocationFragment" -> sharedViewModel.setToolbarTitle("Location")
-            "HeartbeatFragment" -> sharedViewModel.setToolbarTitle("Heartbeat")
+            "TemperatureFragment" -> sharedViewModel.setMenuActive(arrayOf("Home", "Temperature"))
+            "LocationFragment" -> sharedViewModel.setMenuActive(arrayOf("Home", "Location"))
+            "HeartbeatFragment" -> sharedViewModel.setMenuActive(arrayOf("Home", "Heartbeat"))
         }
-
-        fragmentManager.beginTransaction()
-            .replace(R.id.fragment_cont, fragment)
-            .commit()
 
         return true
     }

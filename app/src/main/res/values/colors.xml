@@ -4,6 +4,7 @@
     <color name="white">#FFFFFF</color>
 
     <color name="background">#FFFFFF</color>
+    <color name="text">#222222</color>
 
     <color name="primary">#579DFA</color>
     <color name="ico_primary">#222222</color>

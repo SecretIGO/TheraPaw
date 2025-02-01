@@ -40,7 +40,7 @@ class PetProfileAdapter(
     private fun handleSmallItems(holder: CardViewHolder, imageView: ImageView, position: Int) {
         when (position) {
             0 -> {
-                imageView.setImageResource(R.drawable.ico_add)
+                imageView.setImageResource(R.drawable.ic_launcher_foreground)
                 val params = imageView.layoutParams as ConstraintLayout.LayoutParams
                 params.width = 50.dpToPx(holder.itemView.context)
                 params.height = 50.dpToPx(holder.itemView.context)
@@ -82,7 +82,7 @@ class PetProfileAdapter(
     }
 
     private fun onAddButtonClick() {
-        Toast.makeText(context, "Add Pet Button Clicked!", Toast.LENGTH_SHORT).show()
+
     }
 
     class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
