@@ -8,7 +8,13 @@ import com.experiments.therapaw.data.model.UserModel
 import com.experiments.therapaw.data.states.AuthenticationStates
 import com.experiments.therapaw.ui.view.auth.viewmodel.AuthViewmodel
 import com.experiments.therapaw.ui.view.main.MainActivity
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import java.io.ByteArrayOutputStream
+
+val auth = FirebaseAuth.getInstance()
+val database = FirebaseDatabase.getInstance().reference
 
 fun createUserModel(userUid: String, username: String, email: String, filePath: String): UserModel {
     return UserModel(
@@ -26,6 +32,22 @@ fun createAuthModel(email: String, password: String): AuthModel {
         email = email,
         password = password
     )
+}
+
+fun fetchUserData(context: Context, onUserDataFetched: (UserModel) -> Unit) {
+    val authId = auth.uid ?: return
+
+    database.child("users").child(authId).get().addOnSuccessListener { snapshot ->
+        val userInfo = snapshot.getValue(UserModel::class.java)
+
+        if (userInfo != null) {
+            onUserDataFetched(userInfo)
+        } else {
+            Toast.makeText(context, "Failed to fetch user data", Toast.LENGTH_SHORT).show()
+        }
+    }.addOnFailureListener {
+        Toast.makeText(context, "Error: ${it.message}", Toast.LENGTH_SHORT).show()
+    }
 }
 
 suspend fun signup(

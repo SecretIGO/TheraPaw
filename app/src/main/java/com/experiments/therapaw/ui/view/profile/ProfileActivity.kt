@@ -8,10 +8,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.experiments.therapaw.R
 import com.experiments.therapaw.data.model.UserModel
-import com.experiments.therapaw.databinding.ActivityProfileBinding
 import com.experiments.therapaw.data.utils.dpToPx
+import com.experiments.therapaw.data.utils.fetchUserData
+import com.experiments.therapaw.databinding.ActivityProfileBinding
 import com.experiments.therapaw.ui.adapter.ProfileAdapter
 import com.experiments.therapaw.ui.view.auth.viewmodel.AuthViewmodel
 import com.google.firebase.Firebase
@@ -36,33 +36,15 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun bind() {
         bindRecyclerView()
-        fetchUserData()
+
+        fetchUserData (this@ProfileActivity) { userInfo ->
+            onUserDataFetched(userInfo)
+        }
 
         with(binding) {
             btnBack.setOnClickListener {
                 finish()
             }
-        }
-    }
-
-    private fun fetchUserData() {
-        val userId = auth.uid
-
-        if (userId != null) {
-            database.child("users").child(userId).get()
-                .addOnSuccessListener { snapshot ->
-                    val userInfo = snapshot.getValue(UserModel::class.java)
-                    if (userInfo != null) {
-                        onUserDataFetched(userInfo)
-                    } else {
-                        Toast.makeText(this, "Failed to fetch user data", Toast.LENGTH_SHORT).show()
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    Toast.makeText(this, "Error: ${exception.message}", Toast.LENGTH_SHORT).show()
-                }
-        } else {
-            Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show()
         }
     }
 
