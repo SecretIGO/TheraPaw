@@ -13,22 +13,26 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.browser.customtabs.CustomTabsClient.getPackageName
 import androidx.fragment.app.Fragment
-import com.experiments.therapaw.R
 import com.experiments.therapaw.databinding.FragmentLocationBinding
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
-import org.osmdroid.views.overlay.Marker
 
 class LocationFragment : Fragment(), SensorEventListener {
 
     private lateinit var binding: FragmentLocationBinding
     private lateinit var sensorManager: SensorManager
-    private var lastKnownLocation: GeoPoint? = null
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationRequest: LocationRequest
+    private lateinit var locationCallback: LocationCallback
     private var userOverlay: UserDirectionOverlay? = null
 
     override fun onCreateView(
@@ -48,6 +52,19 @@ class LocationFragment : Fragment(), SensorEventListener {
         map.setMultiTouchControls(true)
 
         sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+
+        locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 2000)
+            .setMinUpdateDistanceMeters(2.0f)
+            .build()
+
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                for (location in locationResult.locations) {
+                    updateMapLocation(GeoPoint(location.latitude, location.longitude))
+                }
+            }
+        }
 
         requestLocationPermission()
     }
@@ -57,7 +74,7 @@ class LocationFragment : Fragment(), SensorEventListener {
     ) { permissions ->
         if (permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true ||
             permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true) {
-            getCurrentLocation()
+            startLocationUpdates()
         } else {
             Toast.makeText(requireContext(), "Location permission denied", Toast.LENGTH_SHORT).show()
         }
@@ -73,26 +90,19 @@ class LocationFragment : Fragment(), SensorEventListener {
     }
 
     @SuppressLint("MissingPermission")
-    private fun getCurrentLocation() {
-        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+    private fun startLocationUpdates() {
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
+    }
 
-        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-            if (location != null) {
-                val userLocation = GeoPoint(location.latitude, location.longitude)
-                lastKnownLocation = userLocation
-                updateMapLocation(userLocation)
-            } else {
-                Toast.makeText(requireContext(), "Unable to get location", Toast.LENGTH_SHORT).show()
-            }
-        }.addOnFailureListener {
-            Toast.makeText(requireContext(), "Failed to get location", Toast.LENGTH_SHORT).show()
-        }
+    private fun stopLocationUpdates() {
+        fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
     private fun updateMapLocation(location: GeoPoint) {
         val map = binding.map
         map.controller.setZoom(18.0)
         map.controller.setCenter(location)
+
         map.overlays.remove(userOverlay)
 
         userOverlay = UserDirectionOverlay(location)
@@ -107,11 +117,13 @@ class LocationFragment : Fragment(), SensorEventListener {
             sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR),
             SensorManager.SENSOR_DELAY_UI
         )
+        startLocationUpdates()
     }
 
     override fun onPause() {
         super.onPause()
         sensorManager.unregisterListener(this)
+        stopLocationUpdates()
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
@@ -136,4 +148,3 @@ class LocationFragment : Fragment(), SensorEventListener {
         binding.map.invalidate()
     }
 }
-
