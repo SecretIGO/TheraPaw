@@ -14,9 +14,9 @@
     <color name="textWarning">#FF9800</color>
     <color name="textWarm">#f97070</color>
 
-    <color name="severe">#f97070</color>
+    <color name="severe">#FF2222</color>
 
-    <color name="backgroundCold">#32004497</color>
+    <color name="backgroundCold">#32328EFF</color>
     <color name="backgroundLight">#32ADD1FF</color>
     <color name="backgroundRegular">#32579DFA</color>
     <color name="backgroundWarm">#32FF9696</color>

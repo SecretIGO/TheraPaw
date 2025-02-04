@@ -1,4 +1,4 @@
-package com.experiments.therapaw.ui.pets
+package com.experiments.therapaw.ui.view.pets
 
 import android.content.Context
 import android.content.Intent
