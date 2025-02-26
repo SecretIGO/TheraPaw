@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.experiments.therapaw.databinding.FragmentLocationBinding
+import com.experiments.therapaw.ui.view.main.fragments.home.fragments.utils.location.UserDirectionOverlay
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest

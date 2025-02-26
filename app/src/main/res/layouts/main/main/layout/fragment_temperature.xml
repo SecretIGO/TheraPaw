@@ -57,6 +57,7 @@
             </FrameLayout>
 
             <TextView
+                android:id="@+id/val_currTempFahrenheit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|start"
@@ -66,6 +67,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/val_currTempCelsius"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"

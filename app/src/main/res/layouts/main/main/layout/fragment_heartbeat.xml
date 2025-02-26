@@ -35,6 +35,7 @@
                     app:tint="@color/textCold" />
 
                 <TextView
+                    android:id="@+id/val_bpm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
