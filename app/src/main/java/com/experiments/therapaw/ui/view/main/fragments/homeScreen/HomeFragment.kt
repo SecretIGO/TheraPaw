@@ -1,22 +1,16 @@
-package com.experiments.therapaw.ui.view.main.fragments.home
+package com.experiments.therapaw.ui.view.main.fragments.homeScreen
 
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.app.NotificationCompat.getColor
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.experiments.therapaw.R
 import com.experiments.therapaw.databinding.FragmentHomeBinding
-import com.experiments.therapaw.ui.view.main.fragments.data.DataFragment
-import com.experiments.therapaw.ui.view.main.fragments.devices.DevicesFragment
-import com.experiments.therapaw.ui.view.main.fragments.home.fragments.HeartbeatFragment
-import com.experiments.therapaw.ui.view.main.fragments.home.fragments.LocationFragment
-import com.experiments.therapaw.ui.view.main.fragments.home.fragments.TemperatureFragment
-import com.experiments.therapaw.viewmodel.SharedViewModel
+import com.experiments.therapaw.ui.view.main.fragments.homeScreen.fragments.HeartbeatFragment
+import com.experiments.therapaw.ui.view.main.fragments.homeScreen.fragments.LocationFragment
+import com.experiments.therapaw.ui.view.main.fragments.homeScreen.fragments.TemperatureFragment
+import com.experiments.therapaw.data.viewmodel.SharedViewModel
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding

@@ -1,16 +1,12 @@
-package com.experiments.therapaw.ui.view.main.fragments.home.fragments
+package com.experiments.therapaw.ui.view.main.fragments.homeScreen.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
-import com.experiments.therapaw.R
 import com.experiments.therapaw.databinding.FragmentHeartbeatBinding
-import com.experiments.therapaw.databinding.FragmentTemperatureBinding
-import com.experiments.therapaw.ui.view.main.fragments.home.fragments.viewmodels.HeartbeatViewModel
-import com.experiments.therapaw.ui.view.main.fragments.home.fragments.viewmodels.TemperatureViewModel
+import com.experiments.therapaw.data.viewmodel.HeartbeatViewModel
 
 class HeartbeatFragment : Fragment() {
 

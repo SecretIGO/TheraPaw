@@ -1,13 +1,11 @@
-package com.experiments.therapaw.ui.view.main.fragments.home.fragments.viewmodels
+package com.experiments.therapaw.data.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.experiments.therapaw.data.model.HeartbeatModel
-import com.experiments.therapaw.data.model.TemperatureModel
 import com.experiments.therapaw.data.nodes.NODE_HEART_SENSOR
-import com.experiments.therapaw.data.nodes.NODE_TEMP_SENSOR
 import com.google.firebase.Firebase
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

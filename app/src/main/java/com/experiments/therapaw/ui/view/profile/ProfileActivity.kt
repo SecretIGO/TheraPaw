@@ -13,7 +13,7 @@ import com.experiments.therapaw.data.utils.dpToPx
 import com.experiments.therapaw.data.utils.fetchUserData
 import com.experiments.therapaw.databinding.ActivityProfileBinding
 import com.experiments.therapaw.ui.adapter.ProfileAdapter
-import com.experiments.therapaw.ui.view.auth.viewmodel.AuthViewmodel
+import com.experiments.therapaw.data.viewmodel.AuthViewmodel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.database.database

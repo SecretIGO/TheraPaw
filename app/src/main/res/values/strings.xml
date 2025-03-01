@@ -18,4 +18,53 @@
     <string name="drawer_open">open</string>
     <string name="drawer_close">close</string>
 
+    <!-- Default strings for inactive devices -->
+
+    <string name="pet_no_connection">
+        There is no connection to the device.
+    </string>
+
+    <string name="pet_heat_no_value">
+        No Data
+    </string>
+
+    <!-- Specific Value Informative Data -->
+
+    <string name="pet_heat_low">
+        Low
+    </string>
+    <string name="pet_heat_normal">
+        Normal
+    </string>
+    <string name="pet_heat_high">
+        High
+    </string>
+
+    <!-- Descriptions of pet data -->
+
+        <!-- location -->
+
+    <string name="pet_away">
+        Hello, far!
+    </string>
+    <string name="pet_near">
+        Hello, near!
+    </string>
+
+        <!-- temperature -->
+
+    <string name="pet_heat_low_desc">
+        The temperature in your pet\'s surrounding is very low and may suffer from hypothermia or frost burn.
+    </string>
+    <string name="pet_heat_normal_desc">
+        Your pet is just chilling.
+    </string>
+    <string name="pet_heat_high_desc">
+        The temperature in your pet\'s surrounding is high which may cause dehydration and exhaustion.
+    </string>
+
+        <!-- heartbeat -->
+
+
+    <string name="normal">Normal</string>
 </resources>

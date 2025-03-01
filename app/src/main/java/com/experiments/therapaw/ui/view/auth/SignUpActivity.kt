@@ -2,7 +2,6 @@ package com.experiments.therapaw.ui.view.auth
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
@@ -11,19 +10,15 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.experiments.therapaw.data.model.AuthModel
-import com.experiments.therapaw.data.model.UserModel
 import com.experiments.therapaw.data.states.AuthenticationStates
 import com.experiments.therapaw.data.utils.createAuthModel
 import com.experiments.therapaw.data.utils.createUserModel
 import com.experiments.therapaw.data.utils.saveImageToInternalStorage
 import com.experiments.therapaw.data.utils.signup
 import com.experiments.therapaw.databinding.ActivitySignUpBinding
-import com.experiments.therapaw.ui.view.auth.viewmodel.AuthViewmodel
-import com.experiments.therapaw.ui.view.auth.viewmodel.UserViewModel
-import com.experiments.therapaw.ui.view.main.MainActivity
+import com.experiments.therapaw.data.viewmodel.AuthViewmodel
+import com.experiments.therapaw.data.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
-import java.io.ByteArrayOutputStream
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding

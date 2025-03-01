@@ -1,4 +1,4 @@
-package com.experiments.therapaw.ui.view.main.fragments.home.fragments.utils.location
+package com.experiments.therapaw.ui.view.main.fragments.homeScreen.fragments.utils.location
 
 import android.graphics.Canvas
 import android.graphics.Color

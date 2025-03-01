@@ -1,4 +1,4 @@
-package com.experiments.therapaw.viewmodel
+package com.experiments.therapaw.data.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

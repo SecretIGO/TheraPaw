@@ -17,7 +17,7 @@ import com.experiments.therapaw.data.model.UserModel
 import com.experiments.therapaw.data.states.AuthenticationStates
 import com.experiments.therapaw.ui.view.auth.SignInActivity
 import com.experiments.therapaw.ui.view.auth.SignUpActivity
-import com.experiments.therapaw.ui.view.auth.viewmodel.AuthViewmodel
+import com.experiments.therapaw.data.viewmodel.AuthViewmodel
 import java.io.File
 
 class ProfileAdapter(

@@ -6,9 +6,8 @@ import android.widget.Toast
 import com.experiments.therapaw.data.model.AuthModel
 import com.experiments.therapaw.data.model.UserModel
 import com.experiments.therapaw.data.states.AuthenticationStates
-import com.experiments.therapaw.ui.view.auth.viewmodel.AuthViewmodel
+import com.experiments.therapaw.data.viewmodel.AuthViewmodel
 import com.experiments.therapaw.ui.view.main.MainActivity
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import java.io.ByteArrayOutputStream

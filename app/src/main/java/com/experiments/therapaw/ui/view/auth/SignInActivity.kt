@@ -5,18 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
-import com.experiments.therapaw.R
 import com.experiments.therapaw.data.model.AuthModel
 import com.experiments.therapaw.data.states.AuthenticationStates
 import com.experiments.therapaw.data.utils.signin
 import com.experiments.therapaw.databinding.ActivitySignInBinding
-import com.experiments.therapaw.ui.view.auth.viewmodel.AuthViewmodel
-import com.experiments.therapaw.ui.view.profile.ProfileActivity
+import com.experiments.therapaw.data.viewmodel.AuthViewmodel
 import kotlinx.coroutines.launch
 
 class SignInActivity : AppCompatActivity() {

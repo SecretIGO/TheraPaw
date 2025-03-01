@@ -6,13 +6,10 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.map
-import com.bumptech.glide.Glide
 import com.experiments.therapaw.R
 import com.experiments.therapaw.data.model.UserModel
 import com.experiments.therapaw.data.utils.fetchUserData
@@ -20,18 +17,13 @@ import com.experiments.therapaw.databinding.ActivityMainBinding
 import com.experiments.therapaw.databinding.GenAppdrawerBinding
 import com.experiments.therapaw.databinding.GenNavbarBinding
 import com.experiments.therapaw.databinding.GenToolbarBinding
-import com.experiments.therapaw.ui.view.auth.SignUpActivity
-import com.experiments.therapaw.ui.view.auth.viewmodel.AuthViewmodel
-import com.experiments.therapaw.ui.view.main.fragments.data.DataFragment
-import com.experiments.therapaw.ui.view.main.fragments.devices.DevicesFragment
-import com.experiments.therapaw.ui.view.main.fragments.home.HomeFragment
-import com.experiments.therapaw.ui.view.main.fragments.home.fragments.HeartbeatFragment
-import com.experiments.therapaw.ui.view.main.fragments.home.fragments.LocationFragment
-import com.experiments.therapaw.ui.view.main.fragments.home.fragments.TemperatureFragment
+import com.experiments.therapaw.data.viewmodel.AuthViewmodel
+import com.experiments.therapaw.ui.view.main.fragments.dataScreen.DataFragment
+import com.experiments.therapaw.ui.view.main.fragments.devicesScreen.DevicesFragment
+import com.experiments.therapaw.ui.view.main.fragments.homeScreen.HomeFragment
 import com.experiments.therapaw.ui.view.profile.PetProfileActivity
 import com.experiments.therapaw.ui.view.profile.ProfileActivity
-import com.experiments.therapaw.viewmodel.SharedViewModel
-import java.io.File
+import com.experiments.therapaw.data.viewmodel.SharedViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
