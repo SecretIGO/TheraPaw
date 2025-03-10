@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.experiments.grouplink.data.states.StorageStates
+import com.experiments.therapaw.data.model.DelayedTempTimeDataModel
 import com.experiments.therapaw.data.model.DeviceDataModel
 import com.experiments.therapaw.data.model.TemperatureModel
 import com.experiments.therapaw.data.model.UserModel
@@ -14,6 +15,9 @@ import com.experiments.therapaw.data.states.AuthenticationStates
 import com.experiments.therapaw.data.utils.saveImageToInternalStorage
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
 
 class UserViewModel : ViewModel() {
@@ -23,8 +27,14 @@ class UserViewModel : ViewModel() {
     private var authenticationStates = MutableLiveData<AuthenticationStates>()
     private var storageStates = MutableLiveData<StorageStates>()
 
-    private val _deviceDataModel = MutableLiveData<DeviceDataModel>()
-    val deviceDataModel: LiveData<DeviceDataModel> get() = _deviceDataModel
+    private val _temperature3minLiveData = MutableLiveData<List<DelayedTempTimeDataModel>>()
+    val temperature3minLiveData: LiveData<List<DelayedTempTimeDataModel>> get() = _temperature3minLiveData
+
+    private val _temperature10minLiveData = MutableLiveData<List<DelayedTempTimeDataModel>>()
+    val temperature10minLiveData: LiveData<List<DelayedTempTimeDataModel>> get() = _temperature10minLiveData
+
+    private val _temperature1hrLiveData = MutableLiveData<List<DelayedTempTimeDataModel>>()
+    val temperature1hrLiveData: LiveData<List<DelayedTempTimeDataModel>> get() = _temperature1hrLiveData
 
     fun addUserData(
         userInformation: UserModel,
@@ -68,9 +78,11 @@ class UserViewModel : ViewModel() {
             return
         }
 
-        val userRef = database.child(NODE_USERS).child(userUid)
+        val userRef = database.child(NODE_USERS)
+            .child(userUid)
+            .child("petDailyRecord")
 
-        userRef.child("petDailyRecord").setValue(deviceDataModel)
+        userRef.setValue(deviceDataModel)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     onDeviceDataAdded.invoke()
@@ -90,19 +102,57 @@ class UserViewModel : ViewModel() {
             return
         }
 
+        temperatureData.isActive = null
+        temperatureData.temperature = null
+
         val deviceRef = database.child(NODE_USERS)
             .child(userUid)
             .child("petDailyRecord")
-            .child("temperature")
+            .child("temperatureData")
 
         deviceRef.setValue(temperatureData)
     }
 
-    fun fetchDeviceData(onTemperatureFetched: (DeviceDataModel?) -> Unit) {
+    fun fetchDeviceData() {
         val userUid = auth.uid
         if (userUid == null) {
             authenticationStates.value = AuthenticationStates.Error
-            onTemperatureFetched(null)
+            return
+        }
+
+        val deviceRef = database.child(NODE_USERS)
+            .child(userUid)
+            .child("deviceData")
+
+        deviceRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val deviceData = snapshot.getValue(DeviceDataModel::class.java)
+                val temp3minList = deviceData?.temperatureData?.temp3minData?.values?.toList()
+                val temp10minList = deviceData?.temperatureData?.temp10minData?.values?.toList()
+                val temp1hrList = deviceData?.temperatureData?.temp1hrData?.values?.toList()
+
+                if (temp3minList != null) {
+                    _temperature3minLiveData.value = temp3minList
+                }
+                if (temp10minList != null) {
+                    _temperature10minLiveData.value = temp10minList
+                }
+                if (temp1hrList != null) {
+                    _temperature1hrLiveData.value = temp1hrList
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.d("Error", "Failed to fetch temperature data: ${error.message}")
+            }
+        })
+    }
+
+    fun fetchDailyRecord(onDailyRecordFetched: (DeviceDataModel?) -> Unit) {
+        val userUid = auth.uid
+        if (userUid == null) {
+            authenticationStates.value = AuthenticationStates.Error
+            onDailyRecordFetched(null)
             return
         }
 
@@ -115,12 +165,12 @@ class UserViewModel : ViewModel() {
                 if (task.isSuccessful) {
                     val snapshot = task.result
                     val deviceData = snapshot.getValue(DeviceDataModel::class.java)
-                    onTemperatureFetched(deviceData)
+                    Log.d("daily", snapshot.value.toString())
+                    onDailyRecordFetched(deviceData)
                 } else {
                     Log.d("Error", "Failed to fetch temperature data: ${task.exception?.message}")
-                    onTemperatureFetched(null)
+                    onDailyRecordFetched(null)
                 }
             }
-
     }
 }

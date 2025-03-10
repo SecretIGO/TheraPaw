@@ -8,11 +8,13 @@
 
     <color name="primary">#1C3250</color>
     <color name="ico_primary">#EAEAEA</color>
+    <color name="disabled">#FF966F</color>
 
     <color name="textCold">#4081e4</color>
     <color name="textRegular">#99b3d9</color>
     <color name="textWarning">#FF9800</color>
     <color name="textWarm">#f97070</color>
+    <color name="textDisabled">#FFEDE0</color>
 
     <color name="severe">#f97070</color>
 
@@ -20,6 +22,8 @@
     <color name="backgroundLight">#322C3542</color>
     <color name="backgroundRegular">#321C3250</color>
     <color name="backgroundWarm">#33734242</color>
+    <color name="backgroundGraph">#29384c</color>
+    <color name="backgroundDisabled">#212328</color>
 
     <color name="transparent">#00000000</color>
 </resources>

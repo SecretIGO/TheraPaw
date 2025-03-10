@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/home"
+        android:id="@+id/menu_3min"
         android:title="3 min" />
     <item
-        android:id="@+id/devices"
+        android:id="@+id/menu_10min"
         android:title="10 min" />
     <item
-        android:id="@+id/data"
+        android:id="@+id/menu_1hr"
         android:title="1hr" />
 </menu>

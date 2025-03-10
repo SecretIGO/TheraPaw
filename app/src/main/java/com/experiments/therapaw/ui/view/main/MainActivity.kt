@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -12,6 +13,7 @@ import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import com.experiments.therapaw.R
 import com.experiments.therapaw.data.model.UserModel
+import com.experiments.therapaw.data.utils.TimedUploadDataUtils
 import com.experiments.therapaw.data.utils.fetchUserData
 import com.experiments.therapaw.databinding.ActivityMainBinding
 import com.experiments.therapaw.databinding.GenAppdrawerBinding
@@ -31,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navbar: GenNavbarBinding
     private lateinit var drawer: GenAppdrawerBinding
     private lateinit var appdrawer: ActionBarDrawerToggle
+    private lateinit var loopedUpload: TimedUploadDataUtils
 
     private lateinit var auth: AuthViewmodel
     private lateinit var sharedViewModel: SharedViewModel
@@ -44,8 +47,10 @@ class MainActivity : AppCompatActivity() {
 
         auth = AuthViewmodel()
         sharedViewModel = SharedViewModel()
+        loopedUpload = TimedUploadDataUtils()
 
         setContentView(binding.root)
+        loopedUpload.delayedUpload()
 
         sharedViewModel.toolbarTitle.observe(this) { title ->
             toolbar.title.text = title
@@ -142,7 +147,7 @@ class MainActivity : AppCompatActivity() {
 
         sharedViewModel.menuActive.observe(this@MainActivity) { activeMenu ->
             defaultSettings()
-
+            Log.d("Menu", "Active menu: ${activeMenu.joinToString(", ")}")
             when {
                 activeMenu.contentEquals(arrayOf("Home")) -> {
                     drawer.navHome.backgroundTintList = selectedBackground
@@ -183,8 +188,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun bindNavigation() {
         when {
-            sharedViewModel.menuActive.value.contentEquals(arrayOf("Home")) ->
+            sharedViewModel.menuActive.value.contentEquals(arrayOf("Home")) -> {
                 replaceFragment(HomeFragment())
+                sharedViewModel.setToolbarTitle("Home")
+            }
 
             sharedViewModel.menuActive.value.contentEquals(arrayOf("Devices")) ->
                 replaceFragment(DevicesFragment())
@@ -222,7 +229,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     private fun onUserDataFetched(userInfo: UserModel) {
         with(binding) {
             appdrawer.textUsername.text = userInfo.username
@@ -253,9 +259,18 @@ class MainActivity : AppCompatActivity() {
 
         val fragmentName = fragment::class.java.simpleName
         when (fragmentName) {
-            "HomeFragment" -> sharedViewModel.setMenuActive(arrayOf("Home"))
-            "DevicesFragment" -> sharedViewModel.setMenuActive(arrayOf("Devices"))
-            "DataFragment" -> sharedViewModel.setMenuActive(arrayOf("Data"))
+            "HomeFragment" -> {
+                sharedViewModel.setMenuActive(arrayOf("Home"))
+                sharedViewModel.setToolbarTitle("Home")
+            }
+            "DevicesFragment" -> {
+                sharedViewModel.setMenuActive(arrayOf("Devices"))
+                sharedViewModel.setToolbarTitle("Devices")
+            }
+            "DataFragment" -> {
+                sharedViewModel.setMenuActive(arrayOf("Data"))
+                sharedViewModel.setToolbarTitle("Data")
+            }
         }
 
         return true

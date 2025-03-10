@@ -67,4 +67,10 @@
 
 
     <string name="normal">Normal</string>
+    <string name="device_is_currently_turned_off">Device is currently turned off</string>
+    <string name="desc_heart_rate_normal">Your pet\'s heart rate is in normal range.</string>
+    <string name="desc_heart_rate_high">Your pet\'s heartbeat is exceeding normal range which might indicate tiredness or exhaustion.\n\nA small dog\'s heart rate is normally 90 to 140 beats per minute. A fast pulse rate might be something as simple as anxiety, but it can also indicate many other conditions including blood loss, dehydration, fever and heatstroke.</string>
+    <string name="desc_heart_rate_low">Your pet\'s heartbeat is below normal range which might indicate low blood pressure, nutritional deficiencies or much worse.\n\nIf a dog\'s heart is beating too slowly, enough blood isn\'t being provided to the entire body. This can cause organ failure and ultimately death. There are many possible reasons for a low heart rate including a problem with the heart or blood pressure, extreme cold, hormone problems, and/or drugs and toxins.</string>
+    <string name="heart_warn_not_enough_pressure">Not enough pressure is being applied to get pulse reading</string>
+    <string name="heart_not_attached">Please ensure that the device is properly attached to your pet</string>
 </resources>

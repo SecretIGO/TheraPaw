@@ -1,11 +1,11 @@
 package com.experiments.therapaw.data.model
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import java.util.Date
 
-@Parcelize
 class DeviceDataModel (
-    val temperatureData: TemperatureModel? = null,
-    val locationData: LocationModel? = null,
-    val heartData: HeartbeatModel? = null
-) : Parcelable
+    var date: Date? = null,
+    var isActive: Boolean? = false,
+    var temperatureData: TemperatureModel? = TemperatureModel(),
+    var locationData: LocationModel? = LocationModel(),
+    var heartData: HeartbeatModel? = HeartbeatModel()
+)

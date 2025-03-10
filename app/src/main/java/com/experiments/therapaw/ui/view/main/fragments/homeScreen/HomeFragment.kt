@@ -1,6 +1,7 @@
 package com.experiments.therapaw.ui.view.main.fragments.homeScreen
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import com.experiments.therapaw.ui.view.main.fragments.homeScreen.fragments.Hear
 import com.experiments.therapaw.ui.view.main.fragments.homeScreen.fragments.LocationFragment
 import com.experiments.therapaw.ui.view.main.fragments.homeScreen.fragments.TemperatureFragment
 import com.experiments.therapaw.data.viewmodel.SharedViewModel
+import com.github.mikephil.charting.charts.LineChart
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
@@ -29,8 +31,11 @@ class HomeFragment : Fragment() {
 
         sharedViewModel = SharedViewModel()
 
-        bind()
+        sharedViewModel.menuActive.observe(requireActivity()) { activeMenu ->
+            Log.d("Menu", "Active menu: ${activeMenu.joinToString(", ")}")
+        }
 
+        bind()
     }
 
     private fun bind() {
@@ -72,13 +77,23 @@ class HomeFragment : Fragment() {
 
         val fragmentName = fragment::class.java.simpleName
         when (fragmentName) {
-            "TemperatureFragment" -> sharedViewModel.setMenuActive(arrayOf("Home", "Temperature"))
-            "LocationFragment" -> sharedViewModel.setMenuActive(arrayOf("Home", "Location"))
-            "HeartbeatFragment" -> sharedViewModel.setMenuActive(arrayOf("Home", "Heartbeat"))
+            "TemperatureFragment" -> {
+                sharedViewModel.setMenuActive(arrayOf("Home", "Temperature"))
+                sharedViewModel.setToolbarTitle("Temperature")
+                Log.d("Menu", "Toolbar title: ${sharedViewModel.toolbarTitle.value}")
+            }
+            "LocationFragment" -> {
+                sharedViewModel.setMenuActive(arrayOf("Home", "Location"))
+                sharedViewModel.setToolbarTitle("Location")
+                Log.d("Menu", "Toolbar title: ${sharedViewModel.toolbarTitle.value}")
+            }
+            "HeartbeatFragment" -> {
+                sharedViewModel.setMenuActive(arrayOf("Home", "Heartbeat"))
+                sharedViewModel.setToolbarTitle("Heartbeat")
+                Log.d("Menu", "Toolbar title: ${sharedViewModel.toolbarTitle.value}")
+            }
         }
 
         return true
     }
-
-
 }

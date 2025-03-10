@@ -16,9 +16,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.experiments.therapaw.R
+import com.experiments.therapaw.data.viewmodel.DevicesViewModel
+import com.experiments.therapaw.data.viewmodel.LocationViewModel
 import com.experiments.therapaw.databinding.FragmentLocationBinding
 import com.experiments.therapaw.ui.view.main.fragments.homeScreen.fragments.utils.location.UserDirectionOverlay
-import com.experiments.therapaw.data.viewmodel.LocationViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -31,8 +32,10 @@ import org.osmdroid.util.BoundingBox
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+import java.util.LinkedList
 import kotlin.math.max
 import kotlin.math.min
+
 
 class LocationFragment : Fragment(), SensorEventListener {
 
@@ -42,9 +45,11 @@ class LocationFragment : Fragment(), SensorEventListener {
     private lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: LocationCallback
     private lateinit var locationViewModel: LocationViewModel
+    private lateinit var devicesViewModel: DevicesViewModel
     private var userOverlay: UserDirectionOverlay? = null
     private var userGeoPoint: GeoPoint? = null
     private var firebaseGeoPoint: GeoPoint? = null
+    private var petLocationMarker: Marker? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,6 +63,9 @@ class LocationFragment : Fragment(), SensorEventListener {
         super.onViewCreated(view, savedInstanceState)
 
         locationViewModel = LocationViewModel()
+        devicesViewModel = DevicesViewModel()
+
+        bind()
 
         locationViewModel.fetchLocationData()
         locationViewModel.locationData.observe(viewLifecycleOwner) { location ->
@@ -66,6 +74,11 @@ class LocationFragment : Fragment(), SensorEventListener {
 
             if (userGeoPoint != null && firebaseGeoPoint != null) {
                 zoomToFitBoth(userGeoPoint!!, firebaseGeoPoint!!)
+            }
+
+            val distance = getDistanceToPet() / 1000
+            if (distance >= 0){
+                binding.valDistance.text = modifyDistanceToString(distance)
             }
         }
 
@@ -87,10 +100,35 @@ class LocationFragment : Fragment(), SensorEventListener {
                     userGeoPoint = GeoPoint(location.latitude, location.longitude)
                     updateMapLocation()
                 }
+
+                val distance = getDistanceToPet() / 1000
+                if (distance >= 0){
+                    binding.valDistance.text = modifyDistanceToString(distance)
+                }
             }
         }
 
         requestLocationPermission()
+    }
+
+    fun bind(){
+        with(binding){
+
+            devicesViewModel.fetchDeviceDataTracking { deviceData ->
+                switchDevice.isChecked = deviceData.locationData?.isActive ?: false
+            }
+
+            switchDevice.setOnClickListener{
+                devicesViewModel.toggleLocationTracking(switchDevice.isChecked)
+            }
+        }
+    }
+
+    private fun getDistanceToPet(): Double {
+        if (userGeoPoint != null && firebaseGeoPoint != null) {
+            return userGeoPoint!!.distanceToAsDouble(firebaseGeoPoint)
+        }
+        return -1.0
     }
 
     private val locationPermissionRequest = registerForActivityResult(
@@ -131,21 +169,30 @@ class LocationFragment : Fragment(), SensorEventListener {
         }
 
         map.overlays.remove(userOverlay)
+
         userOverlay = userGeoPoint?.let { UserDirectionOverlay(it) }
         userOverlay?.let { map.overlays.add(it) }
 
         map.invalidate()
     }
 
+    private fun modifyDistanceToString(decimalValue: Double): String {
+        return String.format("%.2f", decimalValue) + "Km"
+    }
+
     private fun addMarkerToMap(location: GeoPoint) {
         val map = binding.map
-        val marker = Marker(map)
-        marker.position = location
-        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-        marker.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ico_location)
-        marker.title = "Pet Location"
 
-        map.overlays.add(marker)
+        petLocationMarker?.let { map.overlays.remove(it) }
+
+        petLocationMarker = Marker(map).apply {
+            position = location
+            setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+            icon = ContextCompat.getDrawable(requireContext(), R.drawable.ico_location)
+            title = "Pet Location"
+        }
+
+        map.overlays.add(petLocationMarker)
         map.invalidate()
     }
 
