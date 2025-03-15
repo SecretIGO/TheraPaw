@@ -28,6 +28,10 @@
         No Data
     </string>
 
+    <string name="device_is_currently_turned_off">
+        Device is currently turned off
+    </string>
+
     <!-- Specific Value Informative Data -->
 
     <string name="pet_heat_low">
@@ -65,12 +69,19 @@
 
         <!-- heartbeat -->
 
-
     <string name="normal">Normal</string>
-    <string name="device_is_currently_turned_off">Device is currently turned off</string>
     <string name="desc_heart_rate_normal">Your pet\'s heart rate is in normal range.</string>
     <string name="desc_heart_rate_high">Your pet\'s heartbeat is exceeding normal range which might indicate tiredness or exhaustion.\n\nA small dog\'s heart rate is normally 90 to 140 beats per minute. A fast pulse rate might be something as simple as anxiety, but it can also indicate many other conditions including blood loss, dehydration, fever and heatstroke.</string>
     <string name="desc_heart_rate_low">Your pet\'s heartbeat is below normal range which might indicate low blood pressure, nutritional deficiencies or much worse.\n\nIf a dog\'s heart is beating too slowly, enough blood isn\'t being provided to the entire body. This can cause organ failure and ultimately death. There are many possible reasons for a low heart rate including a problem with the heart or blood pressure, extreme cold, hormone problems, and/or drugs and toxins.</string>
+
     <string name="heart_warn_not_enough_pressure">Not enough pressure is being applied to get pulse reading</string>
     <string name="heart_not_attached">Please ensure that the device is properly attached to your pet</string>
+
+        <!-- combination temperature & heartbeat -->
+
+    <string name="pet_heart_high_temp_low">Your pet\'s heart rate is high while their temperature is low, it could indicate shock, hypothermia, or an underlying medical emergency. This combination may suggest poor circulation, severe stress, infection, or internal issues requiring immediate attention. Monitor for additional symptoms like weakness, shivering, or difficulty breathing.</string>
+    <string name="pet_heart_high_temp_high">Your pet needs immediate attention! Your pet’s heart rate is high while the ambient temperature is also high, they may be at risk of heat exhaustion or heatstroke. Watch for excessive panting, drooling, weakness, or disorientation. Ensure they have shade, fresh water, and a cool place to rest. Avoid strenuous activity, and never leave them in a hot environment for extended periods.</string>
+    <string name="pet_heart_low_temp_high">Your pet\'s low heart rate in hot temperatures may indicate dehydration, heat exhaustion, or an underlying medical issue. Watch for weakness, lethargy, or unresponsiveness. Ensure your pet stays hydrated and in a cool environment. If symptoms persist or worsen, seek veterinary care immediately, as this could signal a serious condition.</string>
+    <string name="pet_heart_low_temp_low">Your pet\'s heart rate is slow and paired with a cold temperature may indicate hypothermia or shock. Watch for shivering, weakness, or sluggishness. Move your pet to a warm, dry area and wrap them in a blanket. If symptoms persist or worsen, seek veterinary care immediately, as severe cold exposure can be life-threatening.</string>
+
 </resources>

@@ -111,14 +111,26 @@ class LocationFragment : Fragment(), SensorEventListener {
         requestLocationPermission()
     }
 
-    fun bind(){
-        with(binding){
+    fun bind() {
+        with(binding) {
+            devicesViewModel.fetchDeviceDataTracking { deviceStatus ->
+                switchDevice.isChecked = deviceStatus.locationData?.isActive ?: false
 
-            devicesViewModel.fetchDeviceDataTracking { deviceData ->
-                switchDevice.isChecked = deviceData.locationData?.isActive ?: false
+                if (deviceStatus.isActive != true && deviceStatus.locationData?.isActive != true) {
+                    return@fetchDeviceDataTracking
+                }
+
+                locationViewModel.locationData.observe(viewLifecycleOwner) { location ->
+                    if (deviceStatus.isActive != true && deviceStatus.locationData?.isActive != true) {
+                        return@observe
+                    }
+
+                    firebaseGeoPoint = GeoPoint(location.latitude, location.longitude)
+                    addMarkerToMap(firebaseGeoPoint!!)
+                }
             }
 
-            switchDevice.setOnClickListener{
+            switchDevice.setOnClickListener {
                 devicesViewModel.toggleLocationTracking(switchDevice.isChecked)
             }
         }
@@ -174,6 +186,14 @@ class LocationFragment : Fragment(), SensorEventListener {
         userOverlay?.let { map.overlays.add(it) }
 
         map.invalidate()
+    }
+
+    private fun removeMarkersFromMap() {
+        petLocationMarker?.let {
+            binding.map.overlays.remove(it)
+            petLocationMarker = null
+        }
+        binding.map.invalidate()
     }
 
     private fun modifyDistanceToString(decimalValue: Double): String {

@@ -6,12 +6,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
 import com.experiments.therapaw.R
 import com.experiments.therapaw.data.model.DelayedTempTimeDataModel
+import com.experiments.therapaw.data.model.HeartbeatModel
 import com.experiments.therapaw.data.model.TemperatureModel
+import com.experiments.therapaw.data.viewmodel.CombinedViewModel
 import com.experiments.therapaw.data.viewmodel.DevicesViewModel
+import com.experiments.therapaw.data.viewmodel.HeartbeatViewModel
 import com.experiments.therapaw.data.viewmodel.TemperatureViewModel
 import com.experiments.therapaw.data.viewmodel.UserViewModel
 import com.experiments.therapaw.databinding.FragmentTemperatureBinding
@@ -27,6 +31,8 @@ class TemperatureFragment : Fragment() {
     private lateinit var chart: LineChart
 
     private lateinit var temperatureViewModel: TemperatureViewModel
+    private lateinit var heartbeatViewModel: HeartbeatViewModel
+    private lateinit var combinedViewModel: CombinedViewModel
     private lateinit var userViewModel: UserViewModel
     private lateinit var devicesViewModel: DevicesViewModel
 
@@ -42,10 +48,12 @@ class TemperatureFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         temperatureViewModel = TemperatureViewModel()
+        heartbeatViewModel = HeartbeatViewModel()
         userViewModel = UserViewModel()
         devicesViewModel = DevicesViewModel()
 
-        bind()
+        combinedViewModel = CombinedViewModel(heartbeatViewModel, temperatureViewModel)
+
         chart = binding.chart
 
         userViewModel.temperature3minLiveData.observe(viewLifecycleOwner) { tempList ->
@@ -69,21 +77,49 @@ class TemperatureFragment : Fragment() {
 
             chart.clear()
 
-            when (item.itemId) {
-                R.id.menu_3min -> {
-                    userViewModel.temperature3minLiveData.value?.let { updateChart(it, 180f, 18f) }
-                }
-                R.id.menu_10min -> {
-                    userViewModel.temperature10minLiveData.value?.let { updateChart(it, 600f, 60f) }
-                }
-                R.id.menu_1hr -> {
-                    userViewModel.temperature1hrLiveData.value?.let { updateChart(it, 3600f, 360f) }
+            devicesViewModel.fetchDeviceDataTracking { deviceStatus ->
+
+                if (deviceStatus.isActive == true && deviceStatus.temperatureData?.isActive == true) {
+
+                    when (item.itemId) {
+                        R.id.menu_3min -> {
+                            userViewModel.temperature3minLiveData.value?.let {
+                                updateChart(
+                                    it,
+                                    180f,
+                                    18f
+                                )
+                            }
+                        }
+
+                        R.id.menu_10min -> {
+                            userViewModel.temperature10minLiveData.value?.let {
+                                updateChart(
+                                    it,
+                                    600f,
+                                    60f
+                                )
+                            }
+                        }
+
+                        R.id.menu_1hr -> {
+                            userViewModel.temperature1hrLiveData.value?.let {
+                                updateChart(
+                                    it,
+                                    3600f,
+                                    360f
+                                )
+                            }
+                        }
+                    }
                 }
             }
             true
         }
 
         userViewModel.fetchDeviceData()
+
+        bind()
     }
 
     private fun bind() {
@@ -92,13 +128,25 @@ class TemperatureFragment : Fragment() {
 
         with(binding) {
 
-            switchDevice.setOnClickListener {
+            devicesViewModel.fetchDeviceDataTracking { deviceStatus ->
 
-                devicesViewModel.toggleTemperatureTracking(switchDevice.isChecked)
+                switchDevice.isChecked = deviceStatus.temperatureData?.isActive ?: false
 
-                if(!switchDevice.isChecked){
-                    val backgroundColor = ColorStateList.valueOf(getColor(requireContext(), R.color.backgroundDisabled))
-                    val textColor = ColorStateList.valueOf(getColor(requireContext(), R.color.textDisabled))
+                if (
+                    (deviceStatus.isActive != null && deviceStatus.isActive == false) ||
+                    (deviceStatus.temperatureData != null && deviceStatus.temperatureData?.isActive == false)
+                ) {
+
+                    chart.clear()
+
+                    val backgroundColor = ColorStateList.valueOf(
+                        getColor(
+                            requireContext(),
+                            R.color.backgroundDisabled
+                        )
+                    )
+                    val textColor =
+                        ColorStateList.valueOf(getColor(requireContext(), R.color.textDisabled))
 
                     valTempText.text = getString(R.string.pet_heat_no_value)
                     textDescription.text = getString(R.string.device_is_currently_turned_off)
@@ -107,9 +155,39 @@ class TemperatureFragment : Fragment() {
                     cardTemperature.backgroundTintList = backgroundColor
                     cardBackgroundTemperatureText.backgroundTintList = backgroundColor
                     valTempText.setTextColor(textColor)
-                } else {
+                    imgDescription.visibility = View.VISIBLE
+                }
 
-                    layoutWarning.visibility = View.GONE
+                switchDevice.setOnClickListener {
+
+                    devicesViewModel.toggleTemperatureTracking(switchDevice.isChecked)
+
+                    if (!switchDevice.isChecked) {
+
+                        chart.clear()
+
+                        val backgroundColor = ColorStateList.valueOf(
+                            getColor(
+                                requireContext(),
+                                R.color.backgroundDisabled
+                            )
+                        )
+                        val textColor =
+                            ColorStateList.valueOf(getColor(requireContext(), R.color.textDisabled))
+
+                        valTempText.text = getString(R.string.pet_heat_no_value)
+                        textDescription.text = getString(R.string.device_is_currently_turned_off)
+                        txtWarning.text = getString(R.string.device_is_currently_turned_off)
+                        layoutWarning.visibility = View.VISIBLE
+                        cardTemperature.backgroundTintList = backgroundColor
+                        cardBackgroundTemperatureText.backgroundTintList = backgroundColor
+                        valTempText.setTextColor(textColor)
+                        imgDescription.visibility = View.VISIBLE
+                    } else {
+
+                        initializeTemperatureData()
+                        layoutWarning.visibility = View.GONE
+                    }
                 }
             }
         }
@@ -117,72 +195,96 @@ class TemperatureFragment : Fragment() {
         observeTemperatureData()
     }
 
-    private fun updateChart(tempList: List<DelayedTempTimeDataModel>, axisMax: Float, extraTime: Float) {
+    private fun updateChart(
+        tempList: List<DelayedTempTimeDataModel>,
+        axisMax: Float,
+        extraTime: Float
+    ) {
         if (tempList.isEmpty()) return
 
-        val values = ArrayList<Entry>()
+        devicesViewModel.fetchDeviceDataTracking { deviceStatus ->
 
-        val uniqueSortedList = tempList.sortedBy { it.time }.distinctBy { it.time }
+            if (deviceStatus.isActive == false || deviceStatus.temperatureData?.isActive == false)
+                return@fetchDeviceDataTracking
 
-        uniqueSortedList.forEach { tempData ->
-            values.add(Entry(tempData.time?.toFloat()!! + extraTime, tempData.temperature!!))
+            val values = ArrayList<Entry>()
+
+            val uniqueSortedList = tempList.sortedBy { it.time }.distinctBy { it.time }
+
+            uniqueSortedList.forEach { tempData ->
+                values.add(Entry(tempData.time?.toFloat()!! + extraTime, tempData.temperature!!))
+            }
+
+            val dataSet = LineDataSet(values, "Celsius").apply {
+                color = getColor(requireContext(), R.color.textRegular)
+                setCircleColor(getColor(requireContext(), R.color.textCold))
+                valueTextColor = getColor(requireContext(), R.color.textCold)
+                mode = LineDataSet.Mode.CUBIC_BEZIER
+                cubicIntensity = 0.15f
+                lineWidth = 2f
+                circleRadius = 3f
+                setDrawValues(false)
+            }
+
+            chart.description.isEnabled = false
+            chart.setTouchEnabled(true)
+            chart.isDragEnabled = true
+            chart.setScaleEnabled(true)
+            chart.setPinchZoom(true)
+            chart.setDrawGridBackground(false)
+            chart.legend.isEnabled = true
+            chart.axisLeft.isEnabled = true
+            chart.axisRight.isEnabled = false
+            chart.xAxis.isEnabled = true
+            chart.axisLeft.textColor = getColor(requireContext(), R.color.text)
+            chart.xAxis.textColor = getColor(requireContext(), R.color.text)
+            chart.legend.textColor = getColor(requireContext(), R.color.text)
+            chart.setNoDataTextColor(getColor(requireContext(), R.color.textCold))
+            chart.setBackgroundColor(getColor(requireContext(), R.color.backgroundGraph))
+            chart.xAxis.axisMinimum = 0f
+            chart.xAxis.axisMaximum = axisMax
+
+            chart.clear()
+            chart.data = LineData(dataSet)
+            chart.invalidate()
         }
-
-        val dataSet = LineDataSet(values, "Celsius").apply {
-            color = getColor(requireContext(), R.color.textRegular)
-            setCircleColor(getColor(requireContext(), R.color.textCold))
-            valueTextColor = getColor(requireContext(), R.color.textCold)
-            mode = LineDataSet.Mode.CUBIC_BEZIER
-            cubicIntensity = 0.15f
-            lineWidth = 2f
-            circleRadius = 3f
-            setDrawValues(false)
-        }
-
-        chart.description.isEnabled = false
-        chart.setTouchEnabled(true)
-        chart.isDragEnabled = true
-        chart.setScaleEnabled(true)
-        chart.setPinchZoom(true)
-        chart.setDrawGridBackground(false)
-        chart.legend.isEnabled = true
-        chart.axisLeft.isEnabled = true
-        chart.axisRight.isEnabled = false
-        chart.xAxis.isEnabled = true
-        chart.axisLeft.textColor = getColor(requireContext(), R.color.text)
-        chart.xAxis.textColor = getColor(requireContext(), R.color.text)
-        chart.legend.textColor = getColor(requireContext(), R.color.text)
-        chart.setNoDataTextColor(getColor(requireContext(), R.color.textCold))
-        chart.setBackgroundColor(getColor(requireContext(), R.color.backgroundGraph))
-        chart.xAxis.axisMinimum = 0f
-        chart.xAxis.axisMaximum = axisMax
-
-        chart.clear()
-        chart.data = LineData(dataSet)
-        chart.invalidate()
     }
 
     private fun initializeTemperatureData() {
 
         with(binding) {
 
-            userViewModel.fetchDailyRecord { dailyRecord ->
+            devicesViewModel.fetchDeviceDataTracking { deviceStatus ->
 
-                devicesViewModel.fetchDeviceDataTracking { deviceStatus ->
+                if (deviceStatus.isActive == true && deviceStatus.temperatureData?.isActive == true) {
 
-                    switchDevice.isChecked = deviceStatus.temperatureData?.isActive ?: false
+                    userViewModel.fetchDailyRecord { dailyRecord ->
 
-                    val celsiusValueMax = dailyRecord?.temperatureData?.maxTemperature!!
-                    val celsiusValueMin = dailyRecord.temperatureData?.minTemperature!!
-                    val fahrenheitValueMax = calculateCelsiusToFahrenheit(celsiusValueMax)
-                    val fahrenheitValueMin = calculateCelsiusToFahrenheit(celsiusValueMin)
+                        if (dailyRecord != null) {
 
-                    valMaxTempCelsius.text = modifyDecimalValueToCelsiusString(celsiusValueMax)
-                    valMaxTempFahrenheit.text = modifyDecimalValueToFahrenheitString(fahrenheitValueMax)
-                    valMinTempCelsius.text = modifyDecimalValueToCelsiusString(celsiusValueMin)
-                    valMinTempFahrenheit.text = modifyDecimalValueToFahrenheitString(fahrenheitValueMin)
+                            switchDevice.isChecked = deviceStatus.temperatureData?.isActive ?: false
 
-                    temperatureViewModel.fetchTemperatureData()
+                            val celsiusValueMax = dailyRecord.temperatureData?.maxTemperature!!
+                            val celsiusValueMin = dailyRecord.temperatureData?.minTemperature!!
+                            val fahrenheitValueMax = calculateCelsiusToFahrenheit(celsiusValueMax)
+                            val fahrenheitValueMin = calculateCelsiusToFahrenheit(celsiusValueMin)
+
+                            valMaxTempCelsius.text =
+                                modifyDecimalValueToCelsiusString(celsiusValueMax)
+                            valMaxTempFahrenheit.text =
+                                modifyDecimalValueToFahrenheitString(fahrenheitValueMax)
+                            valMinTempCelsius.text =
+                                modifyDecimalValueToCelsiusString(celsiusValueMin)
+                            valMinTempFahrenheit.text =
+                                modifyDecimalValueToFahrenheitString(fahrenheitValueMin)
+                        }
+                        temperatureViewModel.fetchTemperatureData()
+
+                        if(deviceStatus.heartData?.isActive == true){
+
+                            heartbeatViewModel.fetchHeartbeatData()
+                        }
+                    }
                 }
             }
         }
@@ -190,18 +292,29 @@ class TemperatureFragment : Fragment() {
 
     private fun observeTemperatureData() {
 
-        temperatureViewModel.temperatureData.observe(viewLifecycleOwner) { tempData ->
+        combinedViewModel.combinedLiveData.observe(viewLifecycleOwner) { (heartbeatData, temperatureData) ->
 
-            devicesViewModel.fetchDeviceDataTracking { deviceStatus ->
+        devicesViewModel.fetchDeviceDataTracking { deviceStatus ->
 
-                if (tempData != null && deviceStatus.temperatureData?.isActive == true) {
+                if (deviceStatus.isActive == true && deviceStatus.temperatureData?.isActive == true) {
+                    if (temperatureData != null) {
+                        manageUIChangesBasedOnTemperatureData(temperatureData)
 
-                    manageUIChangesBasedOnTemperatureData(tempData)
+                        if(heartbeatData != null) {
+                            manageDescriptionBasedOnHeartDataAndTemperatureData(heartbeatData, temperatureData)
+                        }
+                    }
                 } else {
 
                     with(binding) {
-                        val backgroundColor = ColorStateList.valueOf(getColor(requireContext(), R.color.backgroundDisabled))
-                        val textColor = ColorStateList.valueOf(getColor(requireContext(), R.color.textDisabled))
+                        val backgroundColor = ColorStateList.valueOf(
+                            getColor(
+                                requireContext(),
+                                R.color.backgroundDisabled
+                            )
+                        )
+                        val textColor =
+                            ColorStateList.valueOf(getColor(requireContext(), R.color.textDisabled))
 
                         valTempText.text = getString(R.string.pet_heat_no_value)
                         textDescription.text = getString(R.string.device_is_currently_turned_off)
@@ -222,7 +335,8 @@ class TemperatureFragment : Fragment() {
 
             if (tempData.temperature!! > 29.4) {
 
-                val backgroundColor = ColorStateList.valueOf(getColor(requireContext(), R.color.backgroundWarm))
+                val backgroundColor =
+                    ColorStateList.valueOf(getColor(requireContext(), R.color.backgroundWarm))
                 val textColor = ColorStateList.valueOf(getColor(requireContext(), R.color.textWarm))
 
                 valTempText.text = getString(R.string.pet_heat_high)
@@ -233,7 +347,8 @@ class TemperatureFragment : Fragment() {
                 imgDescription.visibility = View.VISIBLE
             } else if (tempData.temperature!! < 7.82) {
 
-                val backgroundColor = ColorStateList.valueOf(getColor(requireContext(), R.color.backgroundCold))
+                val backgroundColor =
+                    ColorStateList.valueOf(getColor(requireContext(), R.color.backgroundCold))
                 val textColor = ColorStateList.valueOf(getColor(requireContext(), R.color.textCold))
 
                 valTempText.text = getString(R.string.pet_heat_low)
@@ -244,8 +359,10 @@ class TemperatureFragment : Fragment() {
                 imgDescription.visibility = View.VISIBLE
             } else {
 
-                val backgroundColor = ColorStateList.valueOf(getColor(requireContext(), R.color.backgroundRegular))
-                val textColor = ColorStateList.valueOf(getColor(requireContext(), R.color.textRegular))
+                val backgroundColor =
+                    ColorStateList.valueOf(getColor(requireContext(), R.color.backgroundRegular))
+                val textColor =
+                    ColorStateList.valueOf(getColor(requireContext(), R.color.textRegular))
 
                 valTempText.text = getString(R.string.pet_heat_normal)
                 textDescription.text = getString(R.string.pet_heat_normal_desc)
@@ -256,8 +373,10 @@ class TemperatureFragment : Fragment() {
             }
 
             val celsiusValue = tempData.temperature ?: 0.0
-            val oldCelsiusValueMax = modifyTemperatureStringToDecimalValue(valMaxTempCelsius.text.toString())
-            val oldCelsiusValueMin = modifyTemperatureStringToDecimalValue(valMinTempCelsius.text.toString())
+            val oldCelsiusValueMax =
+                modifyTemperatureStringToDecimalValue(valMaxTempCelsius.text.toString())
+            val oldCelsiusValueMin =
+                modifyTemperatureStringToDecimalValue(valMinTempCelsius.text.toString())
             val celsiusValueMax = getHigherTemperature(oldCelsiusValueMax, celsiusValue)
             val celsiusValueMin = getLowerTemperature(oldCelsiusValueMin, celsiusValue)
             val fahrenheitValue = calculateCelsiusToFahrenheit(celsiusValue)
@@ -277,6 +396,42 @@ class TemperatureFragment : Fragment() {
             )
 
             updateDeviceData(temperatureModel)
+        }
+    }
+
+    private fun manageDescriptionBasedOnHeartDataAndTemperatureData(
+        heartData: HeartbeatModel,
+        tempData: TemperatureModel
+    ) {
+        with(binding) {
+
+            if (heartData.ir_value > 115420) {
+
+                layoutWarning.visibility = View.GONE
+
+                val temperature = tempData.temperature ?: 0.0
+
+                Log.d("combined", "temperature: " + temperature)
+
+                when {
+                    heartData.average_bpm < 90 && temperature < 7.82 -> {
+                        textDescription.text = getString(R.string.pet_heart_low_temp_low)
+                        imgDescription.visibility = View.VISIBLE
+                    }
+                    heartData.average_bpm > 140 && temperature > 29.4 -> {
+                        textDescription.text = getString(R.string.pet_heart_high_temp_high)
+                        imgDescription.visibility = View.VISIBLE
+                    }
+                    heartData.average_bpm < 90 && temperature > 29.4 -> {
+                        textDescription.text = getString(R.string.pet_heart_low_temp_high)
+                        imgDescription.visibility = View.VISIBLE
+                    }
+                    heartData.average_bpm > 140 && temperature < 29.4 -> {
+                        textDescription.text = getString(R.string.pet_heart_high_temp_low)
+                        imgDescription.visibility = View.VISIBLE
+                    }
+                }
+            }
         }
     }
 

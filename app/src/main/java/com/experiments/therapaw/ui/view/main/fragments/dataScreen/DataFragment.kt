@@ -29,10 +29,16 @@ class DataFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         userViewModel = UserViewModel()
-        devicesViewModel = DevicesViewModel()
+
+        bind()
     }
 
     private fun bind(){
-
+        userViewModel.fetchDailyRecord { dailyRecord ->
+            with(binding){
+                valMaxTemp.text = dailyRecord?.temperatureData?.maxTemperature.toString()
+                valMinTemp.text = dailyRecord?.temperatureData?.minTemperature.toString()
+            }
+        }
     }
 }

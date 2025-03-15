@@ -20,12 +20,15 @@ import com.experiments.therapaw.databinding.GenAppdrawerBinding
 import com.experiments.therapaw.databinding.GenNavbarBinding
 import com.experiments.therapaw.databinding.GenToolbarBinding
 import com.experiments.therapaw.data.viewmodel.AuthViewmodel
+import com.experiments.therapaw.data.viewmodel.DevicesViewModel
+import com.experiments.therapaw.data.viewmodel.HeartbeatViewModel
 import com.experiments.therapaw.ui.view.main.fragments.dataScreen.DataFragment
 import com.experiments.therapaw.ui.view.main.fragments.devicesScreen.DevicesFragment
 import com.experiments.therapaw.ui.view.main.fragments.homeScreen.HomeFragment
 import com.experiments.therapaw.ui.view.profile.PetProfileActivity
 import com.experiments.therapaw.ui.view.profile.ProfileActivity
 import com.experiments.therapaw.data.viewmodel.SharedViewModel
+import com.experiments.therapaw.data.viewmodel.TemperatureViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
